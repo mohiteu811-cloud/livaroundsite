@@ -6,7 +6,7 @@
 <title>LivAround — The Open-Source Operating System for Airbnb Hosts</title>
 <meta name="description" content="Manage properties, dispatch workers, track inventory, resolve issues, and report revenue — all from one open-source platform. Self-host free or use managed cloud.">
 <meta property="og:title" content="LivAround — The OS for Airbnb Hosts">
-<meta property="og:description" content="Open-source operating system for Airbnb hosts. 12 modules. One dashboard. Self-host free or start at $10/property/mo.">
+<meta property="og:description" content="Open-source operating system for Airbnb hosts. 11 modules. One dashboard. Self-host free or start at $10/property/mo.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://livaround.com">
 <meta name="twitter:card" content="summary_large_image">
@@ -135,7 +135,7 @@ footer .bottom{margin-top:32px;padding-top:24px;border-top:1px solid var(--borde
       </a>
     </div>
     <div class="stats fade" style="transition-delay:0.4s">
-      <div><div class="stat-val">12</div><div class="stat-label">Modules</div></div>
+      <div><div class="stat-val">11</div><div class="stat-label">Modules</div></div>
       <div><div class="stat-val">30+</div><div class="stat-label">Properties managed</div></div>
       <div><div class="stat-val">$10</div><div class="stat-label">Per property/mo</div></div>
       <div><div class="stat-val">100%</div><div class="stat-label">AI-built</div></div>
@@ -147,7 +147,7 @@ footer .bottom{margin-top:32px;padding-top:24px;border-top:1px solid var(--borde
 <div id="features" style="background:var(--card)">
 <div class="container section">
   <div class="fade"><span class="badge" style="background:rgba(16,185,129,0.12);color:var(--mint)">Platform</span></div>
-  <h2 class="fade serif" style="font-size:36px;margin:16px 0 12px;letter-spacing:-1px;transition-delay:0.1s">12 modules. One dashboard.</h2>
+  <h2 class="fade serif" style="font-size:36px;margin:16px 0 12px;letter-spacing:-1px;transition-delay:0.1s">11 modules. One dashboard.</h2>
   <p class="fade" style="color:var(--light);font-size:16px;max-width:500px;margin-bottom:40px;transition-delay:0.15s">Everything a property manager needs to run day-to-day operations, built into a single cohesive platform.</p>
   <div class="modules-grid" id="mod-grid"></div>
 </div>
@@ -280,10 +280,9 @@ const mods = [
   { icon: "📦", title: "Inventory", desc: "Per-property stock tracking with thresholds, low-stock alerts, and one-click restock", color: "var(--teal)" },
   { icon: "🔧", title: "Issues & Maintenance", desc: "Workers report with photos and severity. You review, approve, and assign tradespeople", color: "var(--coral)" },
   { icon: "📊", title: "Revenue Reports", desc: "Owner statements with gross/net breakdowns, CSV import, and commission tracking", color: "var(--mint)" },
-  { icon: "📍", title: "Live GPS Tracking", desc: "Real-time worker locations on a map with 15-second updates and arrival confirmation", color: "var(--orange)" },
+  { icon: "📍", title: "Worker App & Live GPS", desc: "Mobile app for workers with push notifications, checklists, issue reporting, and real-time GPS tracking with 15-second updates", color: "var(--orange)" },
   { icon: "🛡️", title: "Operations Guide", desc: "Per-property knowledge base with room-by-room docs and QR code labels", color: "var(--purple)" },
-  { icon: "📱", title: "Worker Mobile App", desc: "Android app with push notifications, checklists, issue reporting, and GPS sharing", color: "var(--teal)" },
-  { icon: "💬", title: "Guest Link & Messaging", desc: "Two-way messaging between hosts and guests, check-in info, and property details. Pro feature.", color: "var(--coral)" },
+  { icon: "🤖", title: "AI Guest Messaging", desc: "Two-way host-guest messaging with AI that reads conversations and auto-creates jobs or issues — no manual intervention needed. Pro feature.", color: "var(--coral)" },
   { icon: "🏡", title: "Host App", desc: "Mobile app for hosts to manage properties, view bookings, monitor workers, and track revenue. Pro feature.", color: "var(--orange)" },
 ];
 const modGrid = document.getElementById('mod-grid');
@@ -300,9 +299,9 @@ mods.forEach((m, i) => {
 
 // Comparison table
 const compRows = [
-  ["Worker dispatch", true, false, false, false],
+  ["Worker dispatch & GPS", true, false, false, false],
   ["Inventory tracking", true, false, false, false],
-  ["Live GPS tracking", true, false, false, false],
+  ["AI guest messaging", true, false, false, false],
   ["Issue reporting", true, false, false, false],
   ["Maintenance workflow", true, false, false, false],
   ["Ops guide / QR codes", true, false, false, false],
@@ -326,7 +325,7 @@ tbody.appendChild(pricingRow);
 // Pricing cards
 const tiers = [
   { name: "Community", price: "Free", period: "forever", desc: "Self-hosted", features: ["10 core modules", "Worker mobile app", "REST API access", "Community support", "Unlimited properties"], color: "var(--muted)", featured: false },
-  { name: "Pro", price: "$10", period: "/property/mo", desc: "Managed cloud · Pay as you grow", features: ["Everything in Community", "Guest Link & Messaging", "Host App", "Managed hosting & backups", "Email support"], color: "var(--teal)", featured: true },
+  { name: "Pro", price: "$10", period: "/property/mo", desc: "Managed cloud · Pay as you grow", features: ["Everything in Community", "AI Guest Messaging", "Host App", "Managed hosting & backups", "Email support"], color: "var(--teal)", featured: true },
   { name: "Agency", price: "$100", period: "/month", desc: "Coming soon", features: ["Everything in Pro", "Unlimited properties", "White-label branding", "Channel sync (Airbnb etc.)", "Multi-organization", "Priority support"], color: "var(--orange)", featured: false },
 ];
 const pGrid = document.getElementById('pricing-cards');
