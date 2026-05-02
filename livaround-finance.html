@@ -1,0 +1,2289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LivAround Finance · Borrow against the yield, not just the bricks</title>
+<meta name="description" content="Yield-backed liquidity for short-term rental property owners in Dubai, Phuket and London. Up to 70% LTV. Rates from 4.9% p.a. with shared appreciation kicker.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* Brand · Horizon */
+    --brand-50:  #EEF3FE;
+    --brand-100: #DCE7FD;
+    --brand-300: #88A8F8;
+    --brand-500: #4574F0;
+    --brand-600: #2563EB;
+    --brand-700: #1E4FBF;
+
+    --sun-100: #FFF3DC;
+    --sun-300: #FFD896;
+    --sun-500: #FFB547;
+    --sun-600: #F49A1F;
+    --sun-700: #C97A12;
+
+    --coral-300: #FFAC95;
+    --coral-500: #FF7A59;
+    --coral-600: #E15A3A;
+
+    --ink:       #0B2A3B;
+    --ink-soft:  #1A3F55;
+
+    --slate-50:  #F4F6FA;
+    --slate-100: #E7ECF2;
+    --slate-200: #D7DFE7;
+    --slate-300: #B6C2CD;
+    --slate-400: #8896A4;
+    --slate-500: #5C6E7E;
+    --slate-700: #2F4456;
+
+    --sand:  #FAFBFD;
+    --paper: #FFFFFF;
+    --gold-tint: #FFF8E8;
+
+    --success: #11A87B;
+    --success-100: #D2F1E5;
+
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --r-pill: 999px;
+    --r-md: 14px;
+    --r-lg: 20px;
+    --r-xl: 28px;
+
+    --shadow-sm: 0 1px 2px rgba(11,42,59,0.06), 0 1px 4px rgba(11,42,59,0.04);
+    --shadow-md: 0 4px 14px rgba(11,42,59,0.08), 0 2px 6px rgba(11,42,59,0.05);
+    --shadow-lg: 0 24px 60px rgba(11,42,59,0.10), 0 8px 20px rgba(11,42,59,0.06);
+    --shadow-gold: 0 24px 60px rgba(255,181,71,0.18), 0 8px 20px rgba(255,181,71,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: var(--sand);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 { letter-spacing: -0.02em; line-height: 1.1; }
+  h1 { font-size: clamp(38px, 4.6vw, 60px); font-weight: 700; }
+  h2 { font-size: clamp(28px, 3.4vw, 44px); font-weight: 700; letter-spacing: -0.028em; }
+  h3 { font-size: 19px; font-weight: 600; }
+
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 96px 0; }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sun-700);
+  }
+  .eyebrow--blue { color: var(--brand-700); }
+  .eyebrow--coral { color: var(--coral-600); }
+  .eyebrow--ink { color: var(--ink); }
+
+  .em-sun   { color: var(--sun-700); }
+  .em-coral { color: var(--coral-600); }
+  .em-blue  { color: var(--brand-600); }
+  .em-ink   { color: var(--ink); }
+  .em-soft  { color: var(--slate-500); }
+
+  /* ============ NAV ============ */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250,251,253,0.85);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid var(--slate-100);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 17px; color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-logo {
+    width: 34px; height: 34px;
+    background: var(--ink);
+    border-radius: 8px;
+    display: grid; place-items: center;
+    position: relative;
+  }
+  .nav-logo svg { width: 18px; height: 18px; }
+  .nav-logo::after {
+    content: '';
+    position: absolute;
+    top: 4px; right: 4px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--sun-500);
+    box-shadow: 0 0 0 1.5px var(--ink);
+  }
+  .nav-vertical {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sun-700);
+    background: var(--gold-tint);
+    padding: 5px 10px;
+    border-radius: var(--r-pill);
+    margin-left: 4px;
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: 30px;
+  }
+  .nav-links a {
+    color: var(--slate-700);
+    text-decoration: none;
+    font-size: 14px; font-weight: 500;
+    transition: color 0.18s var(--ease);
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-vertical-switcher {
+    display: flex; gap: 4px;
+    padding: 3px;
+    background: var(--slate-50);
+    border-radius: var(--r-pill);
+    border: 1px solid var(--slate-100);
+  }
+  .nav-vertical-switcher a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: var(--r-pill);
+    color: var(--slate-500);
+    transition: all 0.18s var(--ease);
+  }
+  .nav-vertical-switcher a:hover { color: var(--ink); }
+  .nav-vertical-switcher a.is-active {
+    background: var(--ink);
+    color: var(--sun-300);
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px;
+    border-radius: var(--r-pill);
+    font-weight: 600; font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.18s var(--ease);
+    font-family: inherit;
+  }
+  .btn--primary {
+    background: var(--ink);
+    color: var(--sun-300);
+  }
+  .btn--primary:hover { background: var(--ink-soft); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .btn--ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--slate-200);
+  }
+  .btn--ghost:hover { border-color: var(--ink); }
+  .btn--gold {
+    background: linear-gradient(135deg, var(--sun-500), var(--sun-600));
+    color: var(--ink);
+    box-shadow: 0 8px 24px rgba(255,181,71,0.32);
+  }
+  .btn--gold:hover { transform: translateY(-1px); box-shadow: 0 12px 32px rgba(255,181,71,0.42); }
+
+  /* ============ HERO ============ */
+  .hero {
+    position: relative;
+    padding: 64px 0 96px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(255,181,71,0.10), transparent 65%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -150px; left: -150px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(37,99,235,0.06), transparent 65%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .hero-eyebrow-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 14px;
+    background: var(--gold-tint);
+    border: 1px solid #FFE8BF;
+    border-radius: var(--r-pill);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sun-700);
+    margin-bottom: 28px;
+  }
+  .hero-eyebrow-pill::before {
+    content: '▸'; opacity: 0.7;
+  }
+  .hero h1 {
+    margin-bottom: 22px;
+  }
+  .hero-lede {
+    font-size: 19px;
+    color: var(--slate-700);
+    max-width: 540px;
+    margin-bottom: 40px;
+    line-height: 1.55;
+  }
+  .hero-lede strong { color: var(--ink); font-weight: 600; }
+  .hero-ctas {
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    margin-bottom: 56px;
+  }
+  .hero-meta {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--slate-500);
+    margin-left: 8px;
+  }
+  .hero-meta .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    border-top: 1px solid var(--slate-200);
+    padding-top: 28px;
+    max-width: 600px;
+  }
+  .hero-stat .num {
+    font-size: 28px; font-weight: 700; color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .hero-stat .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--slate-500);
+    margin-top: 4px;
+  }
+
+  /* ============ HERO ORBIT (Property at center, Yield/Liquidity/Upside satellites) ============ */
+  .orbit-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 540px;
+    margin-left: auto;
+  }
+  .orbit-stage::before {
+    content: '';
+    position: absolute;
+    inset: 4%;
+    border-radius: 50%;
+    border: 1.5px dashed var(--slate-200);
+    animation: spin 140s linear infinite;
+    opacity: 0.6;
+  }
+  .orbit-ring {
+    position: absolute;
+    inset: 8%;
+    border-radius: 50%;
+    border: 1.5px solid var(--sun-300);
+    opacity: 0.5;
+  }
+  /* center property tile */
+  .orbit-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 30%;
+    aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%);
+    background: var(--ink);
+    border-radius: 22px;
+    display: grid; place-items: center;
+    box-shadow: var(--shadow-lg);
+    overflow: visible;
+  }
+  .orbit-center::before {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,181,71,0.22);
+  }
+  .orbit-center-icon {
+    width: 38%; height: 38%;
+    color: white;
+    z-index: 2;
+  }
+  .orbit-center-label {
+    position: absolute;
+    bottom: -14px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--sun-500);
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: var(--r-pill);
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(255,181,71,0.3);
+  }
+
+  .satellite {
+    position: absolute;
+    width: 152px;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+  .satellite--yield  { top: 8%;   left: 50%; }
+  .satellite--liq    { top: 71%;  left: 86.4%; }
+  .satellite--up     { top: 71%;  left: 13.6%; }
+
+  .sat-card {
+    background: var(--paper);
+    border-radius: var(--r-md);
+    padding: 12px 14px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(11,42,59,0.05);
+    transition: transform 0.4s var(--ease);
+  }
+  .sat-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--slate-500);
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .sat-role::before {
+    content: '';
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+    opacity: 0.8;
+  }
+  .satellite--yield .sat-role { color: var(--sun-700); }
+  .satellite--liq   .sat-role { color: var(--brand-700); }
+  .satellite--up    .sat-role { color: var(--coral-600); }
+
+  .sat-value {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .sat-detail {
+    font-size: 11px;
+    color: var(--slate-500);
+    line-height: 1.35;
+  }
+
+  /* Pulse traveling along the ring */
+  .pulse-track {
+    position: absolute;
+    inset: 8%;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: spin 12s linear infinite;
+    z-index: 2;
+  }
+  .pulse-track .dot {
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%);
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--sun-500);
+    box-shadow:
+      0 0 0 6px rgba(255,181,71,0.20),
+      0 0 0 12px rgba(255,181,71,0.10),
+      0 0 24px rgba(255,181,71,0.7);
+    animation: pulseColor 12s linear infinite;
+  }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes pulseColor {
+    0%,   25%  { background: var(--sun-500);   box-shadow: 0 0 0 6px rgba(255,181,71,.20), 0 0 0 12px rgba(255,181,71,.10), 0 0 24px rgba(255,181,71,.7); }
+    33%,  58%  { background: var(--brand-500); box-shadow: 0 0 0 6px rgba(69,116,240,.20),  0 0 0 12px rgba(69,116,240,.10),  0 0 24px rgba(69,116,240,.7); }
+    66%,  92%  { background: var(--coral-500); box-shadow: 0 0 0 6px rgba(255,122,89,.20),  0 0 0 12px rgba(255,122,89,.10),  0 0 24px rgba(255,122,89,.7); }
+    100%       { background: var(--sun-500);   box-shadow: 0 0 0 6px rgba(255,181,71,.20),  0 0 0 12px rgba(255,181,71,.10),  0 0 24px rgba(255,181,71,.7); }
+  }
+  @keyframes satGlow {
+    0%   { transform: scale(1); box-shadow: var(--shadow-md), 0 0 0 0 var(--sat-glow, transparent); }
+    8%   { transform: scale(1.05); box-shadow: var(--shadow-md), 0 0 0 8px var(--sat-glow, transparent); }
+    20%  { transform: scale(1.05); box-shadow: var(--shadow-md), 0 0 0 6px var(--sat-glow, transparent); }
+    35%  { transform: scale(1); box-shadow: var(--shadow-md), 0 0 0 0 transparent; }
+    100% { transform: scale(1); box-shadow: var(--shadow-md), 0 0 0 0 transparent; }
+  }
+  .satellite--yield .sat-card { --sat-glow: rgba(255, 181, 71, 0.32); animation: satGlow 12s var(--ease) infinite; animation-delay: 0s; }
+  .satellite--liq   .sat-card { --sat-glow: rgba(69, 116, 240, 0.32); animation: satGlow 12s var(--ease) infinite; animation-delay: 4s; }
+  .satellite--up    .sat-card { --sat-glow: rgba(255, 122, 89, 0.32); animation: satGlow 12s var(--ease) infinite; animation-delay: 8s; }
+
+  /* ============ PROPERTY SHOWCASE ============ */
+  .properties {
+    background: var(--paper);
+    padding: 96px 0;
+    border-top: 1px solid var(--slate-100);
+  }
+  .properties-head {
+    max-width: 760px;
+    margin-bottom: 56px;
+  }
+  .properties-head h2 { margin-bottom: 18px; }
+  .properties-head p { color: var(--slate-700); font-size: 16px; line-height: 1.55; max-width: 640px; }
+  .property-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .property-card {
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    transition: transform 0.32s var(--ease), box-shadow 0.32s var(--ease);
+    display: flex; flex-direction: column;
+  }
+  .property-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+  .property-illust {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+    display: grid; place-items: end center;
+    padding: 0 24px 0 24px;
+  }
+  .property-illust svg { width: 100%; height: 100%; display: block; }
+  .property-card--dubai .property-illust {
+    background: linear-gradient(180deg, #FFE7B8 0%, #FFCB6E 60%, #FFB547 100%);
+  }
+  .property-card--phuket .property-illust {
+    background: linear-gradient(180deg, #FFD3C2 0%, #FFAC95 55%, #FF7A59 100%);
+  }
+  .property-card--london .property-illust {
+    background: linear-gradient(180deg, #DCE7FD 0%, #88A8F8 55%, #4574F0 100%);
+  }
+  .property-illust-flag {
+    position: absolute;
+    top: 16px; left: 16px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(10px);
+    border-radius: var(--r-pill);
+    padding: 5px 12px 5px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--ink);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .property-illust-pill {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: var(--ink);
+    color: var(--success-100);
+    border-radius: var(--r-pill);
+    padding: 5px 11px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .property-illust-pill .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 0 2px rgba(17,168,123,0.25);
+    animation: pulseSimple 1.6s var(--ease) infinite;
+  }
+  @keyframes pulseSimple { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+
+  .property-body { padding: 22px 24px 24px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .property-name { font-size: 16px; font-weight: 700; color: var(--ink); }
+  .property-type {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--slate-500);
+    margin-bottom: 8px;
+  }
+  .property-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 14px;
+    background: var(--slate-50);
+    border-radius: var(--r-md);
+    margin-top: 8px;
+  }
+  .property-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--slate-500);
+    margin-bottom: 3px;
+  }
+  .property-stat-value {
+    font-size: 14px; font-weight: 700; color: var(--ink);
+  }
+  .property-loan-band {
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: var(--gold-tint);
+    border-radius: var(--r-md);
+    border: 1px solid #FFE8BF;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .property-loan-band .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sun-700);
+  }
+  .property-loan-band .val { font-size: 16px; font-weight: 700; color: var(--ink); }
+
+  /* ============ HOW IT WORKS ============ */
+  .how {
+    background: var(--sand);
+    padding: 96px 0;
+  }
+  .how-head { max-width: 760px; margin-bottom: 56px; }
+  .how-head h2 { margin-bottom: 18px; }
+  .how-head p { color: var(--slate-700); font-size: 16px; line-height: 1.55; max-width: 600px; }
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .how-step {
+    position: relative;
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-lg);
+    padding: 28px 24px 24px;
+  }
+  .how-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--sun-700);
+    margin-bottom: 14px;
+  }
+  .how-step h3 { margin-bottom: 8px; font-size: 18px; }
+  .how-step p { color: var(--slate-700); font-size: 14px; line-height: 1.55; }
+  .how-step .timing {
+    margin-top: 16px;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--slate-500);
+    background: var(--slate-50);
+    padding: 5px 10px;
+    border-radius: var(--r-pill);
+  }
+  .how-step .timing::before { content: '⏱'; opacity: 0.7; }
+
+  /* ============ QUESTIONNAIRE ============ */
+  .questionnaire {
+    background: var(--paper);
+    padding: 96px 0;
+    border-top: 1px solid var(--slate-100);
+  }
+  .q-head { max-width: 760px; margin-bottom: 48px; }
+  .q-head h2 { margin-bottom: 18px; }
+  .q-head p { color: var(--slate-700); font-size: 16px; line-height: 1.55; max-width: 640px; }
+
+  .q-stage {
+    background: linear-gradient(180deg, var(--sand) 0%, var(--paper) 100%);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-xl);
+    padding: 36px;
+    box-shadow: var(--shadow-sm);
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .q-progress {
+    display: flex; gap: 6px;
+    margin-bottom: 28px;
+  }
+  .q-progress-step {
+    flex: 1; height: 4px;
+    border-radius: var(--r-pill);
+    background: var(--slate-100);
+    transition: background 0.32s var(--ease);
+  }
+  .q-progress-step.is-done { background: var(--sun-500); }
+  .q-progress-step.is-current { background: var(--ink); }
+
+  .q-step { display: none; }
+  .q-step.is-active { display: block; animation: stepFade 0.4s var(--ease); }
+  @keyframes stepFade {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .q-step .step-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sun-700);
+    margin-bottom: 10px;
+  }
+  .q-step h3 {
+    font-size: 24px; font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .q-step .help {
+    color: var(--slate-500); font-size: 14px;
+    margin-bottom: 22px;
+  }
+
+  .q-options {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 28px;
+  }
+  .q-options.q-options--single { grid-template-columns: 1fr; }
+  .q-options.q-options--four { grid-template-columns: repeat(2, 1fr); }
+  .q-option {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 18px;
+    border: 1.5px solid var(--slate-200);
+    border-radius: var(--r-md);
+    background: var(--paper);
+    cursor: pointer;
+    transition: all 0.18s var(--ease);
+    font-family: inherit; text-align: left;
+  }
+  .q-option:hover {
+    border-color: var(--sun-500);
+    background: var(--gold-tint);
+  }
+  .q-option.is-selected {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: white;
+  }
+  .q-option-dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--slate-300);
+    flex-shrink: 0;
+    position: relative;
+    transition: all 0.18s var(--ease);
+  }
+  .q-option.is-selected .q-option-dot {
+    border-color: var(--sun-500);
+    background: var(--sun-500);
+  }
+  .q-option.is-selected .q-option-dot::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--ink);
+  }
+  .q-option-text {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .q-option-text .ttl { font-weight: 600; font-size: 14px; }
+  .q-option-text .sub { font-size: 12px; opacity: 0.7; }
+
+  .q-input-row {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 24px;
+    background: var(--slate-50);
+    border-radius: var(--r-md);
+    padding: 4px 4px 4px 18px;
+    border: 1.5px solid var(--slate-100);
+  }
+  .q-input-row .currency {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--slate-500);
+  }
+  .q-input-row input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    outline: none;
+    padding: 12px 0;
+    -moz-appearance: textfield;
+  }
+  .q-input-row input::-webkit-outer-spin-button,
+  .q-input-row input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .q-currency-toggle {
+    display: flex; gap: 2px;
+    background: var(--paper);
+    border-radius: var(--r-pill);
+    padding: 3px;
+  }
+  .q-currency-toggle button {
+    border: none;
+    background: transparent;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 6px 10px;
+    border-radius: var(--r-pill);
+    color: var(--slate-500);
+    cursor: pointer;
+    transition: all 0.18s var(--ease);
+  }
+  .q-currency-toggle button.is-active {
+    background: var(--ink);
+    color: var(--sun-300);
+  }
+
+  .q-checkbox {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 16px 18px;
+    border: 1.5px solid var(--slate-200);
+    border-radius: var(--r-md);
+    background: var(--paper);
+    cursor: pointer;
+    margin-bottom: 24px;
+    transition: all 0.18s var(--ease);
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+  }
+  .q-checkbox:hover { border-color: var(--sun-500); background: var(--gold-tint); }
+  .q-checkbox.is-selected { border-color: var(--ink); background: var(--gold-tint); }
+  .q-checkbox-box {
+    width: 20px; height: 20px;
+    border-radius: 5px;
+    border: 1.5px solid var(--slate-300);
+    flex-shrink: 0;
+    margin-top: 2px;
+    position: relative;
+    transition: all 0.18s var(--ease);
+  }
+  .q-checkbox.is-selected .q-checkbox-box {
+    background: var(--sun-500);
+    border-color: var(--sun-500);
+  }
+  .q-checkbox.is-selected .q-checkbox-box::after {
+    content: '';
+    position: absolute;
+    top: 4px; left: 7px;
+    width: 4px; height: 8px;
+    border: 2px solid var(--ink);
+    border-top: 0; border-left: 0;
+    transform: rotate(45deg);
+  }
+  .q-checkbox h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .q-checkbox p { font-size: 12px; color: var(--slate-500); line-height: 1.5; }
+
+  .q-actions {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--slate-100);
+  }
+  .q-step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    color: var(--slate-500);
+  }
+  .q-back {
+    background: transparent;
+    border: none;
+    color: var(--slate-500);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: var(--r-pill);
+    transition: all 0.18s var(--ease);
+  }
+  .q-back:hover { color: var(--ink); background: var(--slate-50); }
+
+  /* Result panel */
+  .q-result {
+    display: none;
+  }
+  .q-result.is-active { display: block; animation: stepFade 0.4s var(--ease); }
+  .q-result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: stretch;
+  }
+  .q-result-headline h3 {
+    font-size: 28px;
+    margin-bottom: 14px;
+    letter-spacing: -0.025em;
+  }
+  .q-result-headline .em-sun { color: var(--sun-700); }
+  .q-result-headline p { color: var(--slate-700); font-size: 14px; line-height: 1.55; margin-bottom: 18px; }
+  .q-result-numbers {
+    background: var(--ink);
+    color: white;
+    border-radius: var(--r-lg);
+    padding: 28px;
+    display: grid;
+    gap: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .q-result-numbers::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(255,181,71,0.18), transparent 65%);
+  }
+  .q-result-num-row {
+    position: relative;
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .q-result-num-row:last-of-type { border-bottom: 0; padding-bottom: 0; }
+  .q-result-num-row .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,216,150,0.8);
+  }
+  .q-result-num-row .val {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .q-result-num-row .val small {
+    font-size: 13px; font-weight: 500; opacity: 0.6;
+    margin-left: 4px;
+  }
+  .q-recommend {
+    background: var(--gold-tint);
+    border: 1px solid #FFE8BF;
+    border-radius: var(--r-md);
+    padding: 16px 18px;
+    margin-bottom: 20px;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .q-recommend-icon {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    background: var(--sun-500);
+    border-radius: 10px;
+    display: grid; place-items: center;
+    color: var(--ink);
+    font-size: 18px;
+  }
+  .q-recommend h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--sun-700);
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 4px;
+  }
+  .q-recommend strong { font-size: 16px; color: var(--ink); display: block; margin-bottom: 4px; }
+  .q-recommend p { font-size: 13px; color: var(--slate-700); line-height: 1.5; }
+
+  /* ============ SCHEMES ============ */
+  .schemes {
+    background: var(--sand);
+    padding: 96px 0;
+  }
+  .schemes-head { text-align: left; margin-bottom: 56px; max-width: 760px; }
+  .schemes-head h2 { margin-bottom: 18px; }
+  .schemes-head p { color: var(--slate-700); font-size: 16px; line-height: 1.55; max-width: 600px; }
+  .scheme-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .scheme-card {
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-lg);
+    padding: 24px;
+    display: flex; flex-direction: column;
+    position: relative;
+    transition: transform 0.32s var(--ease), box-shadow 0.32s var(--ease);
+  }
+  .scheme-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+  .scheme-card--featured {
+    background: linear-gradient(180deg, var(--ink) 0%, #122F42 100%);
+    color: white;
+    border-color: var(--ink);
+    box-shadow: var(--shadow-gold);
+  }
+  .scheme-card--featured::before {
+    content: '★ Featured';
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--sun-500);
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: var(--r-pill);
+    white-space: nowrap;
+  }
+  .scheme-name {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .scheme-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--slate-500);
+    margin-bottom: 18px;
+  }
+  .scheme-card--featured .scheme-tag { color: var(--sun-300); }
+  .scheme-rate {
+    display: flex; align-items: baseline; gap: 6px;
+    margin-bottom: 8px;
+  }
+  .scheme-rate-num {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1;
+  }
+  .scheme-rate-pct { font-size: 18px; font-weight: 600; opacity: 0.7; }
+  .scheme-rate-from {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--slate-500);
+    text-transform: uppercase; letter-spacing: 0.10em;
+    margin-bottom: 18px;
+  }
+  .scheme-card--featured .scheme-rate-from { color: rgba(255,216,150,0.7); }
+  .scheme-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; flex-direction: column; gap: 10px;
+    border-top: 1px solid var(--slate-100);
+    padding-top: 18px;
+    margin-top: auto;
+    margin-bottom: 22px;
+  }
+  .scheme-card--featured .scheme-features { border-top-color: rgba(255,255,255,0.08); }
+  .scheme-features li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--slate-700);
+  }
+  .scheme-card--featured .scheme-features li { color: rgba(255,255,255,0.8); }
+  .scheme-features li::before {
+    content: '';
+    flex-shrink: 0;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--gold-tint);
+    margin-top: 3px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><path d='M3 7.5l2.8 2.8L11 4.5' stroke='%23F49A1F' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  }
+  .scheme-card--featured .scheme-features li::before {
+    background-color: rgba(255,181,71,0.18);
+  }
+  .scheme-cta {
+    text-align: center;
+    padding: 12px 16px;
+    background: var(--paper);
+    border: 1.5px solid var(--slate-200);
+    border-radius: var(--r-pill);
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.18s var(--ease);
+  }
+  .scheme-card:not(.scheme-card--featured) .scheme-cta:hover {
+    border-color: var(--ink);
+  }
+  .scheme-card--featured .scheme-cta {
+    background: var(--sun-500);
+    color: var(--ink);
+    border-color: var(--sun-500);
+  }
+  .scheme-card--featured .scheme-cta:hover {
+    background: var(--sun-600);
+    border-color: var(--sun-600);
+  }
+
+  /* SAK explainer band */
+  .sak-explainer {
+    margin-top: 32px;
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-lg);
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    align-items: center;
+    gap: 22px;
+  }
+  .sak-explainer-icon {
+    width: 56px; height: 56px;
+    background: var(--ink);
+    border-radius: 14px;
+    display: grid; place-items: center;
+    color: var(--sun-500);
+    font-size: 24px;
+  }
+  .sak-explainer-text {
+    font-size: 14px;
+    color: var(--slate-700);
+    line-height: 1.55;
+  }
+  .sak-explainer-text strong { color: var(--ink); font-weight: 700; }
+  .sak-explainer-link {
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex; align-items: center; gap: 6px;
+    white-space: nowrap;
+  }
+  .sak-explainer-link:hover { color: var(--sun-700); }
+
+  /* ============ TRUST / FAQ ============ */
+  .trust {
+    background: var(--paper);
+    padding: 96px 0;
+    border-top: 1px solid var(--slate-100);
+  }
+  .trust-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+  .trust-head h2 { margin-bottom: 18px; }
+  .trust-head p { color: var(--slate-700); font-size: 16px; line-height: 1.55; max-width: 480px; margin-bottom: 28px; }
+  .trust-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .trust-bullets li {
+    display: flex; gap: 14px; align-items: flex-start;
+    color: var(--slate-700);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .trust-bullets .ico {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    background: var(--gold-tint);
+    border-radius: 8px;
+    display: grid; place-items: center;
+    font-size: 14px;
+    margin-top: 1px;
+  }
+
+  .faq {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .faq-item {
+    border-bottom: 1px solid var(--slate-100);
+    padding: 18px 0;
+    cursor: pointer;
+  }
+  .faq-q {
+    display: flex; justify-content: space-between; align-items: center;
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 15px;
+    user-select: none;
+  }
+  .faq-q::after {
+    content: '+';
+    font-size: 22px; font-weight: 400;
+    color: var(--slate-500);
+    transition: transform 0.32s var(--ease);
+  }
+  .faq-item.is-open .faq-q::after { transform: rotate(45deg); color: var(--sun-700); }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    color: var(--slate-700);
+    font-size: 14px;
+    line-height: 1.6;
+    transition: max-height 0.32s var(--ease), margin-top 0.32s var(--ease);
+  }
+  .faq-item.is-open .faq-a {
+    max-height: 200px;
+    margin-top: 10px;
+  }
+
+  /* ============ CTA + FOOTER ============ */
+  .cta-band {
+    background: var(--ink);
+    padding: 80px 0;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-band::before {
+    content: '';
+    position: absolute;
+    top: -40%; right: -20%;
+    width: 80%; height: 180%;
+    background: radial-gradient(circle, rgba(255,181,71,0.12), transparent 60%);
+  }
+  .cta-inner {
+    position: relative;
+    max-width: 760px;
+  }
+  .cta-band h2 { margin-bottom: 16px; color: white; }
+  .cta-band h2 .em-sun { color: var(--sun-500); }
+  .cta-band p {
+    color: rgba(255,255,255,0.7);
+    font-size: 16px;
+    line-height: 1.55;
+    margin-bottom: 28px;
+    max-width: 560px;
+  }
+  .cta-actions {
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+  .cta-band .btn--primary {
+    background: var(--sun-500);
+    color: var(--ink);
+  }
+  .cta-band .btn--primary:hover { background: var(--sun-600); }
+  .cta-band .btn--ghost {
+    background: transparent;
+    color: white;
+    border-color: rgba(255,255,255,0.2);
+  }
+  .cta-band .btn--ghost:hover { border-color: white; }
+
+  .footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.55);
+    padding: 60px 0 40px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 13px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  .footer-brand-block { display: flex; flex-direction: column; gap: 14px; max-width: 320px; }
+  .footer-tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sun-300);
+  }
+  .footer-desc {
+    color: rgba(255,255,255,0.5);
+    line-height: 1.55;
+  }
+  .footer-col h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+  .footer-col a {
+    display: block;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    margin-bottom: 8px;
+    font-size: 13px;
+    transition: color 0.18s var(--ease);
+  }
+  .footer-col a:hover { color: var(--sun-300); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 24px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .footer-disclaimer {
+    color: rgba(255,255,255,0.35);
+    font-size: 11px;
+    line-height: 1.55;
+    max-width: 740px;
+    margin-bottom: 24px;
+  }
+  .footer-bottom-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ============ FADE-IN ============ */
+  .fade {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  }
+  .fade.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 980px) {
+    .nav-links { display: none; }
+    .nav-vertical-switcher { display: none; }
+    .hero-grid { grid-template-columns: 1fr; gap: 80px; }
+    .orbit-stage { max-width: 440px; margin: 0 auto; }
+    .property-grid, .how-grid, .scheme-grid { grid-template-columns: 1fr 1fr; }
+    .trust-grid { grid-template-columns: 1fr; gap: 40px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .q-result-grid { grid-template-columns: 1fr; }
+    .sak-explainer { grid-template-columns: 56px 1fr; }
+    .sak-explainer-link { grid-column: span 2; justify-self: end; }
+  }
+  @media (max-width: 720px) {
+    .section, .properties, .how, .questionnaire, .schemes, .trust { padding: 64px 0; }
+    .hero-stats { grid-template-columns: 1fr 1fr; gap: 24px 12px; }
+    .property-grid, .how-grid, .scheme-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+    .satellite { width: 130px; }
+    .satellite--yield { transform: translate(-50%, -55%); }
+    .q-options, .q-options.q-options--four { grid-template-columns: 1fr; }
+    .q-stage { padding: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pulse-track, .orbit-stage::before, .satellite .sat-card,
+    .property-illust-pill .dot { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================================ NAV ================================ -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="/" class="nav-brand">
+      <span class="nav-logo">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M3 11L12 4L21 11V20H14V14H10V20H3V11Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      livaround
+      <span class="nav-vertical">Finance</span>
+    </a>
+    <div class="nav-vertical-switcher">
+      <a href="/">Operations</a>
+      <a href="/finance" class="is-active">Finance</a>
+      <a href="/access">Access</a>
+    </div>
+    <div class="nav-links">
+      <a href="#properties">Properties</a>
+      <a href="#how">How it works</a>
+      <a href="#schemes">Schemes</a>
+      <a href="#apply" class="btn btn--gold" style="padding:9px 18px;font-size:14px">Apply</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================================ HERO ================================ -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="hero-eyebrow-pill">Asset liquidity · Finance smarter</span>
+      <h1 class="fade is-visible">
+        Borrow against<br>
+        the <span class="em-sun">yield.</span><br>
+        Not the <span class="em-coral">bricks.</span>
+      </h1>
+      <p class="hero-lede fade is-visible" style="transition-delay:0.1s">
+        If your property generates revenue on Airbnb, Booking.com or Vrbo,
+        we can lend against the income it produces — not just its bricks-and-mortar value.
+        <strong>Up to 70% LTV. Rates from 4.9% p.a.</strong> with an optional shared
+        appreciation kicker. Designed for STR operators in Dubai, Phuket and London.
+      </p>
+      <div class="hero-ctas fade is-visible" style="transition-delay:0.18s">
+        <a href="#apply" class="btn btn--primary">
+          Get an indicative offer
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3.5 8h9m-3.5-3.5L12.5 8 9 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#schemes" class="btn btn--ghost">See schemes</a>
+        <span class="hero-meta">
+          <span class="dot"></span>
+          5&nbsp;min · No credit check
+        </span>
+      </div>
+      <div class="hero-stats fade is-visible" style="transition-delay:0.26s">
+        <div class="hero-stat"><div class="num">70<span style="font-size:.55em;opacity:.6">%</span></div><div class="lbl">Max LTV</div></div>
+        <div class="hero-stat"><div class="num">4.9<span style="font-size:.55em;opacity:.6">%</span></div><div class="lbl">From rate p.a.</div></div>
+        <div class="hero-stat"><div class="num">3</div><div class="lbl">Jurisdictions</div></div>
+        <div class="hero-stat"><div class="num">14<span style="font-size:.55em;opacity:.6">d</span></div><div class="lbl">To funding</div></div>
+      </div>
+    </div>
+
+    <!-- HERO ORBIT VISUAL -->
+    <div class="orbit-stage fade is-visible" style="transition-delay:0.12s" aria-label="Property at center, with yield, liquidity and equity satellites orbiting around it">
+      <div class="orbit-ring"></div>
+
+      <!-- Center property tile -->
+      <div class="orbit-center">
+        <svg class="orbit-center-icon" viewBox="0 0 32 32" fill="none">
+          <path d="M4 14L16 4L28 14V27H20V18H12V27H4V14Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="22" r="1.5" fill="currentColor"/>
+        </svg>
+        <span class="orbit-center-label">Your Property</span>
+      </div>
+
+      <!-- Pulse traveling along the ring -->
+      <div class="pulse-track">
+        <span class="dot"></span>
+      </div>
+
+      <!-- Yield satellite (top, sun) -->
+      <div class="satellite satellite--yield">
+        <div class="sat-card">
+          <div class="sat-role">Yield</div>
+          <div class="sat-value">+£35,200<span style="font-size:.55em;opacity:.6">/yr</span></div>
+          <div class="sat-detail">Gross STR revenue · multi-channel verified</div>
+        </div>
+      </div>
+
+      <!-- Liquidity satellite (bottom-right, brand-blue) -->
+      <div class="satellite satellite--liq">
+        <div class="sat-card">
+          <div class="sat-role">Liquidity</div>
+          <div class="sat-value">£420,000</div>
+          <div class="sat-detail">Indicative loan · 70% LTV at 4.9%</div>
+        </div>
+      </div>
+
+      <!-- Upside satellite (bottom-left, coral) -->
+      <div class="satellite satellite--up">
+        <div class="sat-card">
+          <div class="sat-role">Upside</div>
+          <div class="sat-value">75%</div>
+          <div class="sat-detail">Of appreciation retained · with SAK</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================ PROPERTY SHOWCASE ================================ -->
+<section class="properties" id="properties">
+  <div class="container">
+    <div class="properties-head fade">
+      <div class="eyebrow" style="margin-bottom:12px">▸ Markets · Where we lend</div>
+      <h2>Three cities. <span class="em-soft">One playbook for yield-backed lending.</span></h2>
+      <p>We've designed underwriting around the rhythms of short-term rental income — high-season Goa, year-round Dubai, peak-summer London. Below: live-style ranges drawn from our internal market data on actively-let properties.</p>
+    </div>
+
+    <div class="property-grid">
+
+      <!-- DUBAI -->
+      <div class="property-card property-card--dubai fade">
+        <div class="property-illust">
+          <span class="property-illust-flag">🇦🇪 Dubai</span>
+          <span class="property-illust-pill"><span class="dot"></span>High yield</span>
+          <!-- Dubai skyline silhouette -->
+          <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+            <!-- sun -->
+            <circle cx="55" cy="55" r="22" fill="#FFFFFF" opacity="0.5"/>
+            <!-- buildings (back layer) -->
+            <g fill="#E89A12" opacity="0.5">
+              <rect x="10"  y="120" width="22" height="80"/>
+              <rect x="36"  y="100" width="14" height="100"/>
+              <rect x="265" y="105" width="20" height="95"/>
+              <rect x="290" y="125" width="22" height="75"/>
+            </g>
+            <!-- buildings (mid) -->
+            <g fill="#C97A12" opacity="0.7">
+              <rect x="55" y="80" width="24" height="120"/>
+              <rect x="83" y="95" width="18" height="105"/>
+              <rect x="225" y="80" width="22" height="120"/>
+              <rect x="250" y="92" width="14" height="108"/>
+            </g>
+            <!-- Burj Khalifa style center spire -->
+            <path d="M150 200 L150 30 L155 20 L160 30 L165 20 L170 30 L175 20 L180 30 L180 200 Z" fill="#0B2A3B"/>
+            <rect x="148" y="50" width="34" height="150" fill="#0B2A3B"/>
+            <!-- adjacent towers -->
+            <rect x="115" y="65" width="30" height="135" fill="#0B2A3B"/>
+            <polygon points="115,65 130,40 145,65" fill="#0B2A3B"/>
+            <rect x="187" y="58" width="28" height="142" fill="#0B2A3B"/>
+            <polygon points="187,58 201,32 215,58" fill="#0B2A3B"/>
+            <!-- windows -->
+            <g fill="#FFB547">
+              <rect x="120" y="80" width="3" height="3"/><rect x="128" y="80" width="3" height="3"/><rect x="135" y="80" width="3" height="3"/>
+              <rect x="120" y="95" width="3" height="3"/><rect x="128" y="95" width="3" height="3"/><rect x="135" y="95" width="3" height="3"/>
+              <rect x="120" y="110" width="3" height="3"/><rect x="128" y="110" width="3" height="3"/><rect x="135" y="110" width="3" height="3"/>
+              <rect x="155" y="80" width="3" height="3"/><rect x="162" y="80" width="3" height="3"/><rect x="170" y="80" width="3" height="3"/>
+              <rect x="155" y="100" width="3" height="3"/><rect x="162" y="100" width="3" height="3"/><rect x="170" y="100" width="3" height="3"/>
+              <rect x="155" y="120" width="3" height="3"/><rect x="162" y="120" width="3" height="3"/><rect x="170" y="120" width="3" height="3"/>
+              <rect x="192" y="80" width="3" height="3"/><rect x="200" y="80" width="3" height="3"/><rect x="208" y="80" width="3" height="3"/>
+              <rect x="192" y="100" width="3" height="3"/><rect x="200" y="100" width="3" height="3"/><rect x="208" y="100" width="3" height="3"/>
+            </g>
+          </svg>
+        </div>
+        <div class="property-body">
+          <div class="property-type">Branded residence · Marina / Downtown</div>
+          <div class="property-name">2-bed waterfront apartment</div>
+          <div class="property-stats">
+            <div>
+              <div class="property-stat-label">Valuation</div>
+              <div class="property-stat-value">£480k–£680k</div>
+            </div>
+            <div>
+              <div class="property-stat-label">Gross yield</div>
+              <div class="property-stat-value">7.5–10.2%</div>
+            </div>
+          </div>
+          <div class="property-loan-band">
+            <span class="lbl">Indicative loan</span>
+            <span class="val">£336k–£476k</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHUKET -->
+      <div class="property-card property-card--phuket fade" style="transition-delay:0.08s">
+        <div class="property-illust">
+          <span class="property-illust-flag">🇹🇭 Phuket</span>
+          <span class="property-illust-pill"><span class="dot"></span>Tropical</span>
+          <!-- Phuket: villa with palms -->
+          <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+            <!-- distant mountains -->
+            <path d="M0 200 L0 130 Q60 90 120 120 Q180 140 240 110 Q280 95 320 115 L320 200 Z" fill="#E15A3A" opacity="0.4"/>
+            <!-- waves -->
+            <path d="M0 200 L0 175 Q40 165 80 172 Q120 178 160 170 Q200 162 240 172 Q280 180 320 168 L320 200 Z" fill="#FF7A59" opacity="0.6"/>
+            <!-- palm trees -->
+            <g>
+              <!-- left palm -->
+              <path d="M40 200 Q40 160 50 130 Q55 110 50 95" stroke="#0B2A3B" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+              <g fill="#0B2A3B">
+                <path d="M50 95 Q70 85 88 88 Q70 95 50 95"/>
+                <path d="M50 95 Q40 75 30 70 Q42 85 50 95"/>
+                <path d="M50 95 Q65 78 80 70 Q66 88 50 95"/>
+                <path d="M50 95 Q35 90 20 95 Q35 96 50 95"/>
+              </g>
+              <!-- right palm -->
+              <path d="M275 200 Q275 168 268 140 Q263 120 268 105" stroke="#0B2A3B" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+              <g fill="#0B2A3B">
+                <path d="M268 105 Q285 95 305 100 Q286 106 268 105"/>
+                <path d="M268 105 Q258 85 245 80 Q260 95 268 105"/>
+                <path d="M268 105 Q255 90 240 88 Q258 100 268 105"/>
+                <path d="M268 105 Q280 88 295 80 Q282 100 268 105"/>
+              </g>
+            </g>
+            <!-- villa -->
+            <g>
+              <rect x="100" y="120" width="120" height="60" fill="#0B2A3B"/>
+              <polygon points="95,120 160,90 225,120" fill="#0B2A3B"/>
+              <rect x="115" y="135" width="20" height="20" fill="#FFB547"/>
+              <rect x="150" y="135" width="20" height="20" fill="#FFB547"/>
+              <rect x="185" y="135" width="20" height="20" fill="#FFB547"/>
+              <rect x="148" y="160" width="22" height="20" fill="#FF7A59"/>
+              <!-- pool deck -->
+              <rect x="80" y="180" width="160" height="6" fill="#0B2A3B" opacity="0.7"/>
+            </g>
+            <!-- tiny sun glow -->
+            <circle cx="265" cy="55" r="14" fill="#FFFFFF" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="property-body">
+          <div class="property-type">Pool villa · Surin / Bang Tao / Layan</div>
+          <div class="property-name">3-bed pool villa</div>
+          <div class="property-stats">
+            <div>
+              <div class="property-stat-label">Valuation</div>
+              <div class="property-stat-value">£280k–£540k</div>
+            </div>
+            <div>
+              <div class="property-stat-label">Gross yield</div>
+              <div class="property-stat-value">5.4–8.1%</div>
+            </div>
+          </div>
+          <div class="property-loan-band">
+            <span class="lbl">Indicative loan</span>
+            <span class="val">£182k–£378k</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LONDON -->
+      <div class="property-card property-card--london fade" style="transition-delay:0.16s">
+        <div class="property-illust">
+          <span class="property-illust-flag">🇬🇧 London</span>
+          <span class="property-illust-pill"><span class="dot"></span>Stable</span>
+          <!-- London: Georgian terrace + Big Ben -->
+          <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+            <!-- Big Ben silhouette in distance -->
+            <g fill="#1E4FBF" opacity="0.45">
+              <rect x="265" y="60" width="22" height="140"/>
+              <rect x="262" y="50" width="28" height="14"/>
+              <polygon points="265,50 276,28 287,50"/>
+              <circle cx="276" cy="58" r="4" fill="#FFB547"/>
+            </g>
+            <!-- Georgian terrace row -->
+            <g>
+              <!-- house 1 -->
+              <rect x="20" y="90" width="60" height="110" fill="#0B2A3B"/>
+              <polygon points="20,90 50,68 80,90" fill="#0B2A3B"/>
+              <rect x="22" y="62" width="6" height="10" fill="#0B2A3B"/>
+              <rect x="35" y="58" width="6" height="14" fill="#0B2A3B"/>
+              <rect x="55" y="58" width="6" height="14" fill="#0B2A3B"/>
+              <rect x="68" y="62" width="6" height="10" fill="#0B2A3B"/>
+              <!-- windows -->
+              <rect x="30" y="105" width="14" height="18" fill="#FFD896"/>
+              <rect x="56" y="105" width="14" height="18" fill="#FFD896"/>
+              <rect x="30" y="135" width="14" height="18" fill="#FFD896"/>
+              <rect x="56" y="135" width="14" height="18" fill="#FFD896"/>
+              <rect x="42" y="170" width="16" height="30" fill="#FF7A59"/>
+              <!-- house 2 -->
+              <rect x="80" y="90" width="60" height="110" fill="#0B2A3B"/>
+              <polygon points="80,90 110,68 140,90" fill="#0B2A3B"/>
+              <rect x="95" y="58" width="6" height="14" fill="#0B2A3B"/>
+              <rect x="115" y="58" width="6" height="14" fill="#0B2A3B"/>
+              <rect x="90" y="105" width="14" height="18" fill="#FFD896"/>
+              <rect x="116" y="105" width="14" height="18" fill="#FFD896"/>
+              <rect x="90" y="135" width="14" height="18" fill="#FFD896"/>
+              <rect x="116" y="135" width="14" height="18" fill="#FFD896"/>
+              <rect x="102" y="170" width="16" height="30" fill="#0B2A3B"/>
+              <!-- house 3 -->
+              <rect x="140" y="90" width="60" height="110" fill="#0B2A3B"/>
+              <polygon points="140,90 170,68 200,90" fill="#0B2A3B"/>
+              <rect x="155" y="58" width="6" height="14" fill="#0B2A3B"/>
+              <rect x="175" y="58" width="6" height="14" fill="#0B2A3B"/>
+              <rect x="150" y="105" width="14" height="18" fill="#FFD896"/>
+              <rect x="176" y="105" width="14" height="18" fill="#FFD896"/>
+              <rect x="150" y="135" width="14" height="18" fill="#FFD896"/>
+              <rect x="176" y="135" width="14" height="18" fill="#FFD896"/>
+              <rect x="162" y="170" width="16" height="30" fill="#FF7A59"/>
+              <!-- house 4 -->
+              <rect x="200" y="90" width="60" height="110" fill="#0B2A3B"/>
+              <polygon points="200,90 230,68 260,90" fill="#0B2A3B"/>
+              <rect x="215" y="58" width="6" height="14" fill="#0B2A3B"/>
+              <rect x="235" y="58" width="6" height="14" fill="#0B2A3B"/>
+              <rect x="210" y="105" width="14" height="18" fill="#FFD896"/>
+              <rect x="236" y="105" width="14" height="18" fill="#FFD896"/>
+              <rect x="210" y="135" width="14" height="18" fill="#FFD896"/>
+              <rect x="236" y="135" width="14" height="18" fill="#FFD896"/>
+              <rect x="222" y="170" width="16" height="30" fill="#0B2A3B"/>
+            </g>
+          </svg>
+        </div>
+        <div class="property-body">
+          <div class="property-type">Period conversion · Zone 1–2</div>
+          <div class="property-name">Studio / 1-bed apartment</div>
+          <div class="property-stats">
+            <div>
+              <div class="property-stat-label">Valuation</div>
+              <div class="property-stat-value">£420k–£780k</div>
+            </div>
+            <div>
+              <div class="property-stat-label">Gross yield</div>
+              <div class="property-stat-value">4.2–6.8%</div>
+            </div>
+          </div>
+          <div class="property-loan-band">
+            <span class="lbl">Indicative loan</span>
+            <span class="val">£252k–£468k</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p style="margin-top:32px;font-size:13px;color:var(--slate-500);max-width:620px;line-height:1.6">
+      <span style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--slate-700)">⚠ Indicative only.</span>
+      Final loan amounts depend on full valuation, STR revenue verification, jurisdiction-specific
+      regulations, and your existing leverage. Run the questionnaire below for a personalized estimate.
+    </p>
+  </div>
+</section>
+
+<!-- ================================ HOW IT WORKS ================================ -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="how-head fade">
+      <div class="eyebrow" style="margin-bottom:12px">▸ The process</div>
+      <h2>Three steps. <span class="em-soft">From questionnaire to funded.</span></h2>
+      <p>Built for operators, not enterprises. We pull your STR revenue data directly from connected channels — no spreadsheets, no income proof letters, no waiting for the bank.</p>
+    </div>
+
+    <div class="how-grid">
+      <div class="how-step fade">
+        <div class="how-num">01 · Tell us</div>
+        <h3>Six questions about your property</h3>
+        <p>Location, current value, STR revenue, existing mortgage, loan term, and whether you'd like a shared appreciation kicker. That's it.</p>
+        <div class="timing">5 minutes</div>
+      </div>
+      <div class="how-step fade" style="transition-delay:0.08s">
+        <div class="how-num">02 · We model</div>
+        <h3>Algorithmic underwriting on yield</h3>
+        <p>We pull occupancy, ADR, and seasonality directly from your channel manager (Airbnb, Booking.com, Vrbo) and run our yield-aware model. Rate and LTV come back in real-time.</p>
+        <div class="timing">Instant</div>
+      </div>
+      <div class="how-step fade" style="transition-delay:0.16s">
+        <div class="how-num">03 · You decide</div>
+        <h3>Funds in 14 days</h3>
+        <p>If you accept, we run a full valuation (RICS in UK, equivalent locally) and complete legals. Funds disbursed to your nominated account.</p>
+        <div class="timing">14 days</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================ QUESTIONNAIRE ================================ -->
+<section class="questionnaire" id="apply">
+  <div class="container">
+    <div class="q-head fade">
+      <div class="eyebrow eyebrow--ink" style="margin-bottom:12px">▸ Indicative offer · 5 min</div>
+      <h2>Get a yield-backed estimate. <span class="em-sun">No credit check. No commitment.</span></h2>
+      <p>Six questions. We'll show you maximum LTV, indicative rate, monthly cost, and the recommended scheme based on your answers. Apply for the full assessment when you're ready.</p>
+    </div>
+
+    <div class="q-stage fade">
+      <!-- progress -->
+      <div class="q-progress">
+        <div class="q-progress-step is-current" data-step="1"></div>
+        <div class="q-progress-step" data-step="2"></div>
+        <div class="q-progress-step" data-step="3"></div>
+        <div class="q-progress-step" data-step="4"></div>
+        <div class="q-progress-step" data-step="5"></div>
+        <div class="q-progress-step" data-step="6"></div>
+      </div>
+
+      <!-- STEP 1: Location -->
+      <div class="q-step is-active" data-step="1">
+        <div class="step-eyebrow">Question 01 · Location</div>
+        <h3>Where is your property?</h3>
+        <p class="help">We currently lend in three jurisdictions. Other markets join the waitlist.</p>
+        <div class="q-options">
+          <button class="q-option" data-value="dubai"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">🇦🇪 Dubai, UAE</span><span class="sub">Marina · Downtown · JBR · Palm</span></span></button>
+          <button class="q-option" data-value="phuket"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">🇹🇭 Phuket, Thailand</span><span class="sub">Surin · Bang Tao · Layan · Kamala</span></span></button>
+          <button class="q-option" data-value="london"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">🇬🇧 London, UK</span><span class="sub">Zone 1–3 · Article 4 areas excluded</span></span></button>
+          <button class="q-option" data-value="other"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">📍 Elsewhere</span><span class="sub">Join waitlist · Goa, Bali, Lisbon coming</span></span></button>
+        </div>
+        <div class="q-actions">
+          <button class="q-back" disabled style="opacity:0.3">← Back</button>
+          <span class="q-step-num">1 of 6</span>
+        </div>
+      </div>
+
+      <!-- STEP 2: Property value -->
+      <div class="q-step" data-step="2">
+        <div class="step-eyebrow">Question 02 · Valuation</div>
+        <h3>What's the property's current market value?</h3>
+        <p class="help">Your best estimate. We'll commission a formal valuation if you proceed.</p>
+        <div class="q-input-row">
+          <span class="currency" id="q-currency-symbol">£</span>
+          <input type="number" id="q-value" placeholder="500,000" inputmode="numeric">
+          <div class="q-currency-toggle">
+            <button data-cur="GBP" class="is-active">GBP</button>
+            <button data-cur="USD">USD</button>
+            <button data-cur="AED">AED</button>
+          </div>
+        </div>
+        <div class="q-actions">
+          <button class="q-back">← Back</button>
+          <span class="q-step-num">2 of 6</span>
+        </div>
+      </div>
+
+      <!-- STEP 3: STR status -->
+      <div class="q-step" data-step="3">
+        <div class="step-eyebrow">Question 03 · STR status</div>
+        <h3>Does it generate short-term rental yield?</h3>
+        <p class="help">This determines what we can lend against. Multi-channel verified properties qualify for higher LTV.</p>
+        <div class="q-options q-options--single">
+          <button class="q-option" data-value="multi"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">✓ Listed across multiple channels</span><span class="sub">Airbnb + Booking.com + Vrbo · 12+ months trading history</span></span></button>
+          <button class="q-option" data-value="direct"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">✓ Direct bookings only</span><span class="sub">Self-managed website or referral · 6+ months trading</span></span></button>
+          <button class="q-option" data-value="inactive"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">⏸ Listed but inactive</span><span class="sub">Currently between guests or seasonal pause</span></span></button>
+          <button class="q-option" data-value="none"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">○ Not yet listed</span><span class="sub">Owner-occupied or long-let — STR potential only</span></span></button>
+          <button class="q-option" data-value="restricted"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">✗ Restricted from STR</span><span class="sub">HOA, council, or freeholder restrictions</span></span></button>
+        </div>
+        <div class="q-actions">
+          <button class="q-back">← Back</button>
+          <span class="q-step-num">3 of 6</span>
+        </div>
+      </div>
+
+      <!-- STEP 4: Gross annual revenue -->
+      <div class="q-step" data-step="4">
+        <div class="step-eyebrow">Question 04 · Yield evidence</div>
+        <h3>Approximate gross annual STR revenue?</h3>
+        <p class="help">Last 12 months across all channels. We'll verify by pulling your channel manager data if you proceed.</p>
+        <div class="q-input-row">
+          <span class="currency q-revenue-cur">£</span>
+          <input type="number" id="q-revenue" placeholder="35,000" inputmode="numeric">
+        </div>
+        <div class="q-actions">
+          <button class="q-back">← Back</button>
+          <span class="q-step-num">4 of 6</span>
+        </div>
+      </div>
+
+      <!-- STEP 5: Existing mortgage -->
+      <div class="q-step" data-step="5">
+        <div class="step-eyebrow">Question 05 · Existing leverage</div>
+        <h3>Existing mortgage on the property?</h3>
+        <p class="help">If yes, we'll second-charge against your equity (or refinance if you'd prefer).</p>
+        <div class="q-options q-options--four">
+          <button class="q-option" data-value="none"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">No mortgage</span><span class="sub">Owned outright</span></span></button>
+          <button class="q-option" data-value="low"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">Under 30% LTV</span><span class="sub">Mostly equity</span></span></button>
+          <button class="q-option" data-value="mid"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">30–60% LTV</span><span class="sub">Standard mortgage</span></span></button>
+          <button class="q-option" data-value="high"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">Over 60% LTV</span><span class="sub">Highly leveraged</span></span></button>
+        </div>
+        <div class="q-actions">
+          <button class="q-back">← Back</button>
+          <span class="q-step-num">5 of 6</span>
+        </div>
+      </div>
+
+      <!-- STEP 6: Term + SAK toggle -->
+      <div class="q-step" data-step="6">
+        <div class="step-eyebrow">Question 06 · Term &amp; structure</div>
+        <h3>How long do you want the loan?</h3>
+        <p class="help">Plus: would you trade some appreciation upside for a lower rate?</p>
+        <div class="q-options q-options--single" style="margin-bottom:18px">
+          <button class="q-option" data-value="bridge"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">⚡ Bridge · 6–24 months</span><span class="sub">Refinance or sale planned · Interest-only</span></span></button>
+          <button class="q-option" data-value="medium"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">🏠 Medium · 3–7 years</span><span class="sub">Standard · Most common choice</span></span></button>
+          <button class="q-option" data-value="long"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">📅 Long · 7+ years</span><span class="sub">Buy-and-hold · Lower monthly burden</span></span></button>
+        </div>
+        <button class="q-checkbox" id="q-sak">
+          <span class="q-checkbox-box"></span>
+          <span>
+            <h4>★ Add Shared Appreciation Kicker</h4>
+            <p>Drop your rate to <strong>4.9% p.a.</strong> in exchange for sharing 25% of appreciation on exit or refinance. Best for long-term holders confident in capital growth.</p>
+          </span>
+        </button>
+        <div class="q-actions">
+          <button class="q-back">← Back</button>
+          <button class="btn btn--gold" id="q-submit">See indicative offer →</button>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="q-result" data-step="result">
+        <div class="step-eyebrow">Your indicative offer · Based on your answers</div>
+        <div class="q-result-grid">
+          <div class="q-result-headline">
+            <h3 id="q-result-title">Yield-backed liquidity available.</h3>
+            <p id="q-result-blurb">Based on your inputs, here's what we'd indicatively lend. This is an estimate — final terms confirm after a full assessment.</p>
+            <div class="q-recommend">
+              <div class="q-recommend-icon">★</div>
+              <div>
+                <h4 id="q-rec-name">Recommended · Shared Appreciation Kicker</h4>
+                <strong id="q-rec-tag">Lowest rate · 25% appreciation share on exit</strong>
+                <p id="q-rec-blurb">Your long-term hold and STR-verified yield make this the most cost-effective structure. You retain 75% of any property appreciation.</p>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <a href="#" class="btn btn--primary">Apply for full assessment</a>
+              <button class="btn btn--ghost" id="q-restart">Start over</button>
+            </div>
+          </div>
+          <div class="q-result-numbers">
+            <div class="q-result-num-row">
+              <span class="lbl">Max loan amount</span>
+              <span class="val" id="q-out-loan">£420,000</span>
+            </div>
+            <div class="q-result-num-row">
+              <span class="lbl">Effective LTV</span>
+              <span class="val" id="q-out-ltv">70%</span>
+            </div>
+            <div class="q-result-num-row">
+              <span class="lbl">Indicative rate</span>
+              <span class="val" id="q-out-rate">4.9% <small>p.a.</small></span>
+            </div>
+            <div class="q-result-num-row">
+              <span class="lbl">Monthly · interest only</span>
+              <span class="val" id="q-out-monthly">£1,715</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DECLINE state -->
+      <div class="q-result" data-step="decline">
+        <div class="step-eyebrow" style="color:var(--coral-600)">○ Not a fit right now</div>
+        <h3 style="font-size:24px;margin-bottom:12px">Your property has STR restrictions we can't lend against today.</h3>
+        <p style="color:var(--slate-700);font-size:14px;line-height:1.6;margin-bottom:24px;max-width:560px">
+          We underwrite against verifiable short-term rental yield. If your property has HOA, council,
+          or freeholder restrictions blocking STR, the underwriting model doesn't work for us yet.
+          Want us to email when we expand into long-let underwriting?
+        </p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href="#" class="btn btn--primary">Join waitlist</a>
+          <button class="btn btn--ghost" id="q-restart-2">Start over</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================ SCHEMES ================================ -->
+<section class="schemes" id="schemes">
+  <div class="container">
+    <div class="schemes-head fade">
+      <div class="eyebrow" style="margin-bottom:12px">▸ Schemes · Pick the structure</div>
+      <h2>Four ways to structure it. <span class="em-soft">All built around your yield.</span></h2>
+      <p>Indicative ranges. Your actual rate and LTV depend on jurisdiction, STR verification, existing leverage, and term. The questionnaire above gives you a personalized estimate.</p>
+    </div>
+
+    <div class="scheme-grid">
+
+      <!-- STANDARD -->
+      <div class="scheme-card fade">
+        <div class="scheme-name">Standard LAP</div>
+        <div class="scheme-tag">Predictable · Most common</div>
+        <div class="scheme-rate"><span class="scheme-rate-num">8.5</span><span class="scheme-rate-pct">%</span></div>
+        <div class="scheme-rate-from">From · p.a. · 2–10yr</div>
+        <ul class="scheme-features">
+          <li>Up to 60% LTV</li>
+          <li>Monthly EMI · principal + interest</li>
+          <li>No appreciation share</li>
+          <li>Fixed or variable rate options</li>
+        </ul>
+        <a href="#apply" class="scheme-cta">Choose Standard</a>
+      </div>
+
+      <!-- YIELD-LINKED -->
+      <div class="scheme-card fade" style="transition-delay:0.06s">
+        <div class="scheme-name">Yield-Linked</div>
+        <div class="scheme-tag">Smooths seasonal income</div>
+        <div class="scheme-rate"><span class="scheme-rate-num">6.5</span><span class="scheme-rate-pct">%</span></div>
+        <div class="scheme-rate-from">From · base + 5% of monthly STR rev</div>
+        <ul class="scheme-features">
+          <li>Up to 65% LTV</li>
+          <li>Repayment scales with revenue</li>
+          <li>Pay less in low season</li>
+          <li>Best for seasonal markets (Phuket, Goa)</li>
+        </ul>
+        <a href="#apply" class="scheme-cta">Choose Yield-Linked</a>
+      </div>
+
+      <!-- SHARED APPRECIATION KICKER (FEATURED) -->
+      <div class="scheme-card scheme-card--featured fade" style="transition-delay:0.12s">
+        <div class="scheme-name">Shared Appreciation Kicker</div>
+        <div class="scheme-tag">Lowest rate · Share the upside</div>
+        <div class="scheme-rate"><span class="scheme-rate-num">4.9</span><span class="scheme-rate-pct">%</span></div>
+        <div class="scheme-rate-from">From · p.a. · 3–7yr</div>
+        <ul class="scheme-features">
+          <li>Up to 70% LTV — our highest</li>
+          <li>Lender shares 25% of appreciation on exit / refi</li>
+          <li>You retain 75% of all upside</li>
+          <li>Best for long-term holders confident in capital growth</li>
+        </ul>
+        <a href="#apply" class="scheme-cta">Choose Shared Appreciation</a>
+      </div>
+
+      <!-- BRIDGE -->
+      <div class="scheme-card fade" style="transition-delay:0.18s">
+        <div class="scheme-name">Bridge / Interest-Only</div>
+        <div class="scheme-tag">Short-term flexibility</div>
+        <div class="scheme-rate"><span class="scheme-rate-num">9.9</span><span class="scheme-rate-pct">%</span></div>
+        <div class="scheme-rate-from">From · 6–24 months</div>
+        <ul class="scheme-features">
+          <li>Up to 65% LTV</li>
+          <li>Interest-only · balloon at end</li>
+          <li>No early repayment charge after 6 months</li>
+          <li>Best for refinance or sale pending</li>
+        </ul>
+        <a href="#apply" class="scheme-cta">Choose Bridge</a>
+      </div>
+
+    </div>
+
+    <!-- SAK explainer band -->
+    <div class="sak-explainer fade">
+      <div class="sak-explainer-icon">★</div>
+      <div class="sak-explainer-text">
+        <strong>What's a Shared Appreciation Kicker?</strong> When you sell or refinance the property,
+        we take 25% of any value increase since loan origination — in exchange for a much lower running
+        rate. If the property doesn't appreciate, you owe nothing extra. If it does, we share the upside
+        proportionally. <strong>You always keep 75%.</strong>
+      </div>
+      <a href="#" class="sak-explainer-link">
+        See worked examples
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path d="M3.5 8h9m-3.5-3.5L12.5 8 9 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================================ TRUST + FAQ ================================ -->
+<section class="trust">
+  <div class="container">
+    <div class="trust-grid">
+      <div class="trust-head fade">
+        <div class="eyebrow" style="margin-bottom:12px">▸ How we underwrite</div>
+        <h2>Built for STR operators. <span class="em-soft">Not legacy bank checklists.</span></h2>
+        <p>Traditional lenders treat short-term rental income as "non-standard" and discount it. We treat it as the primary asset — because for many operators, it is.</p>
+        <ul class="trust-bullets">
+          <li><span class="ico">📊</span><span><strong>Yield-aware underwriting.</strong> We pull occupancy, ADR, and seasonality from your channel manager — no income proof letters.</span></li>
+          <li><span class="ico">🌍</span><span><strong>Multi-jurisdiction servicing.</strong> Currency-matched origination in GBP, USD, and AED. Local valuers and legal partners in each market.</span></li>
+          <li><span class="ico">📜</span><span><strong>Regulatory standing.</strong> Operating under structured pilot frameworks; FCA authorisation pending in the UK. Disclosed in full at offer stage.</span></li>
+          <li><span class="ico">🔒</span><span><strong>Privacy-first data sharing.</strong> Channel manager OAuth — read-only, revocable any time, never sold.</span></li>
+        </ul>
+      </div>
+
+      <div class="faq fade" style="transition-delay:0.1s">
+        <div class="faq-item is-open">
+          <div class="faq-q">What if my property is currently owner-occupied?</div>
+          <div class="faq-a">We can still lend, but at a lower LTV (typically capped at 50%) since there's no STR yield to underwrite against. Once you list and trade for 6+ months, we'll uplift the LTV at no fee.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How does the appreciation share work in practice?</div>
+          <div class="faq-a">If your £500k property is worth £650k when you exit, the £150k uplift is shared 75/25 — you keep £112,500, we receive £37,500. If it's worth £450k or less, no kicker is owed. The kicker is capped at the 25% share of appreciation regardless.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can I exit early if my plans change?</div>
+          <div class="faq-a">Yes — after a 6-month early repayment lock (12 months for SAK loans), you can repay at any time without penalty. SAK loans settle the appreciation share at fair-market valuation on exit.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Why won't traditional banks do this?</div>
+          <div class="faq-a">Most banks model STR income as "self-employed rental" — which they discount by 50–70% or refuse to count entirely. We're built around verifiable channel data, so we can underwrite the actual income at face value with the right structural protections.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Do you lend against properties I'm still buying?</div>
+          <div class="faq-a">Not yet. We're a refi/equity-release product, not an origination mortgage. If you've owned and operated for 6+ months, you're in scope.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================ CTA ================================ -->
+<section class="cta-band">
+  <div class="container cta-inner">
+    <h2>Five minutes. <span class="em-sun">Indicative offer in real-time.</span></h2>
+    <p>No credit check, no commitment, no dragging documents into a portal. Just six honest questions about your property and what we can lend against the yield it generates.</p>
+    <div class="cta-actions">
+      <a href="#apply" class="btn btn--primary">
+        Start questionnaire
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3.5 8h9m-3.5-3.5L12.5 8 9 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#schemes" class="btn btn--ghost">Compare schemes</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================================ FOOTER ================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand-block">
+        <a href="/" class="nav-brand" style="color:white">
+          <span class="nav-logo"><svg viewBox="0 0 24 24" fill="none"><path d="M3 11L12 4L21 11V20H14V14H10V20H3V11Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          livaround
+          <span class="nav-vertical">Finance</span>
+        </a>
+        <div class="footer-tagline">Yield-backed liquidity for STR operators</div>
+        <p class="footer-desc">Part of LivAround Ltd. — operations, finance, and access for short-term rental investors.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#properties">Markets</a>
+        <a href="#how">How it works</a>
+        <a href="#schemes">Schemes</a>
+        <a href="#apply">Apply</a>
+      </div>
+      <div class="footer-col">
+        <h4>Sister verticals</h4>
+        <a href="/">LivAround Operations</a>
+        <a href="/access">LivAround Access</a>
+        <a href="/about">About LivAround</a>
+        <a href="https://github.com/mohiteu811-cloud/Livaround">Open source repo</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal &amp; trust</h4>
+        <a href="#">Risk warnings</a>
+        <a href="#">Regulatory disclosures</a>
+        <a href="#">Privacy policy</a>
+        <a href="#">Terms of service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-disclaimer">
+        Your property may be repossessed if you do not keep up repayments on a loan secured against it.
+        LivAround Finance is a product of LIVAROUND LTD (England &amp; Wales). Lending in the UK is subject
+        to FCA authorisation, which is pending. Lending in Dubai and Phuket operates under jurisdictional
+        partner structures. Indicative figures shown are not offers of credit. Subject to status, valuation,
+        and STR data verification. Property values can fall as well as rise.
+      </p>
+      <div class="footer-bottom-text">© 2026 LivAround Ltd · v1.0 · "Liquidity, in operation."</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ============ FADE-IN ============
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+
+// ============ FAQ TOGGLE ============
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.addEventListener('click', () => item.classList.toggle('is-open'));
+});
+
+// ============ QUESTIONNAIRE ============
+const state = {
+  step: 1,
+  answers: {
+    location: null,
+    value: null,
+    currency: 'GBP',
+    str: null,
+    revenue: null,
+    mortgage: null,
+    term: null,
+    sak: false,
+  }
+};
+
+const stepEls = document.querySelectorAll('.q-step');
+const progressEls = document.querySelectorAll('.q-progress-step');
+const TOTAL_STEPS = 6;
+
+function showStep(n) {
+  stepEls.forEach(s => s.classList.remove('is-active'));
+  document.querySelectorAll('.q-result').forEach(r => r.classList.remove('is-active'));
+  if (n === 'result' || n === 'decline') {
+    document.querySelector(`.q-result[data-step="${n}"]`).classList.add('is-active');
+    progressEls.forEach(p => p.classList.add('is-done'));
+  } else {
+    document.querySelector(`.q-step[data-step="${n}"]`).classList.add('is-active');
+    progressEls.forEach((p, i) => {
+      p.classList.remove('is-done', 'is-current');
+      if (i + 1 < n) p.classList.add('is-done');
+      else if (i + 1 === n) p.classList.add('is-current');
+    });
+  }
+  state.step = n;
+}
+
+// Option selection
+document.querySelectorAll('.q-step .q-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    const step = opt.closest('.q-step').dataset.step;
+    opt.parentElement.querySelectorAll('.q-option').forEach(o => o.classList.remove('is-selected'));
+    opt.classList.add('is-selected');
+    const v = opt.dataset.value;
+    if (step === '1') state.answers.location = v;
+    else if (step === '3') {
+      state.answers.str = v;
+      if (v === 'restricted') { setTimeout(() => showStep('decline'), 350); return; }
+    }
+    else if (step === '5') state.answers.mortgage = v;
+    else if (step === '6') state.answers.term = v;
+
+    if (step !== '6') {
+      setTimeout(() => showStep(parseInt(step) + 1), 280);
+    }
+  });
+});
+
+// Currency toggle
+document.querySelectorAll('.q-currency-toggle button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    state.answers.currency = btn.dataset.cur;
+    const sym = btn.dataset.cur === 'GBP' ? '£' : btn.dataset.cur === 'USD' ? '$' : 'AED ';
+    document.getElementById('q-currency-symbol').textContent = sym;
+    document.querySelectorAll('.q-revenue-cur').forEach(c => c.textContent = sym);
+  });
+});
+
+// Value input — advance on enter / blur / change with value
+function tryAdvance(id, nextStep, currentStepNum, key, minOk) {
+  const el = document.getElementById(id);
+  const handler = () => {
+    const v = parseFloat(el.value);
+    if (v >= minOk && state.step === currentStepNum) {
+      state.answers[key] = v;
+      setTimeout(() => showStep(nextStep), 200);
+    }
+  };
+  el.addEventListener('keydown', e => { if (e.key === 'Enter') handler(); });
+  el.addEventListener('blur', handler);
+  el.addEventListener('change', handler);
+}
+tryAdvance('q-value', 3, 2, 'value', 1);
+tryAdvance('q-revenue', 5, 4, 'revenue', 0);
+
+// Expose for testing
+window.showStep = showStep;
+window.state = state;
+
+// SAK checkbox
+document.getElementById('q-sak').addEventListener('click', () => {
+  document.getElementById('q-sak').classList.toggle('is-selected');
+  state.answers.sak = document.getElementById('q-sak').classList.contains('is-selected');
+});
+
+// Back buttons
+document.querySelectorAll('.q-back').forEach(b => {
+  b.addEventListener('click', () => {
+    if (typeof state.step === 'number' && state.step > 1) showStep(state.step - 1);
+  });
+});
+
+// Submit
+document.getElementById('q-submit').addEventListener('click', () => {
+  if (!state.answers.term) { alert('Please pick a term first.'); return; }
+  computeOffer();
+  showStep('result');
+});
+document.getElementById('q-restart').addEventListener('click', resetQ);
+document.getElementById('q-restart-2').addEventListener('click', resetQ);
+function resetQ() {
+  state.answers = { location: null, value: null, currency: 'GBP', str: null, revenue: null, mortgage: null, term: null, sak: false };
+  document.querySelectorAll('.q-option.is-selected, .q-checkbox.is-selected').forEach(el => el.classList.remove('is-selected'));
+  document.getElementById('q-value').value = '';
+  document.getElementById('q-revenue').value = '';
+  showStep(1);
+}
+
+// Compute indicative offer
+function computeOffer() {
+  const { location, value, str, mortgage, term, sak } = state.answers;
+  const sym = state.answers.currency === 'GBP' ? '£' : state.answers.currency === 'USD' ? '$' : 'AED ';
+
+  // Max LTV
+  let maxLTV = 0.60;
+  if (str === 'multi') maxLTV = 0.70;
+  else if (str === 'direct') maxLTV = 0.65;
+  else if (str === 'inactive') maxLTV = 0.60;
+  else if (str === 'none') maxLTV = 0.50;
+
+  // Existing leverage haircut
+  const existingLTV = mortgage === 'none' ? 0 : mortgage === 'low' ? 0.20 : mortgage === 'mid' ? 0.45 : 0.65;
+  const availableLTV = Math.max(maxLTV - existingLTV, 0);
+  const loan = Math.round(value * availableLTV);
+
+  // Rate determination
+  let rate, scheme, schemeBlurb;
+  if (sak && term !== 'bridge') {
+    rate = 4.9; scheme = 'Shared Appreciation Kicker';
+    schemeBlurb = 'Your long-term hold and STR-verified yield make this the most cost-effective structure. You retain 75% of any property appreciation.';
+  } else if (term === 'bridge') {
+    rate = 9.9; scheme = 'Bridge / Interest-Only';
+    schemeBlurb = 'Short-term flexibility with no early repayment charge after 6 months. Interest-only with balloon at end.';
+  } else if (str === 'multi' || str === 'direct') {
+    rate = 6.5; scheme = 'Yield-Linked';
+    schemeBlurb = 'Repayments scale with your verified STR revenue — pay less in low season. Best fit for your operating profile.';
+  } else {
+    rate = 8.5; scheme = 'Standard LAP';
+    schemeBlurb = 'Predictable monthly EMI on principal + interest. No appreciation share. Conservative structure for non-yield-verified properties.';
+  }
+
+  const monthly = Math.round(loan * (rate/100) / 12);
+
+  // Format helpers
+  const fmt = n => sym + n.toLocaleString('en-GB');
+
+  document.getElementById('q-out-loan').textContent = fmt(loan);
+  document.getElementById('q-out-ltv').textContent = Math.round(availableLTV * 100) + '%';
+  document.getElementById('q-out-rate').innerHTML = rate.toFixed(1) + '% <small>p.a.</small>';
+  document.getElementById('q-out-monthly').textContent = fmt(monthly);
+
+  document.getElementById('q-rec-name').textContent = '★ Recommended · ' + scheme;
+  document.getElementById('q-rec-blurb').textContent = schemeBlurb;
+  if (sak && term !== 'bridge') {
+    document.getElementById('q-rec-tag').textContent = 'Lowest rate · 25% appreciation share on exit';
+  } else if (term === 'bridge') {
+    document.getElementById('q-rec-tag').textContent = 'Short-term · Interest-only · 6–24 months';
+  } else if (str === 'multi' || str === 'direct') {
+    document.getElementById('q-rec-tag').textContent = 'Variable repayment · Tied to your STR yield';
+  } else {
+    document.getElementById('q-rec-tag').textContent = 'Predictable · Most common · 2–10yr terms';
+  }
+
+  // Headline tone
+  if (loan === 0) {
+    document.getElementById('q-result-title').innerHTML = 'No headroom available <span class="em-sun">at current leverage.</span>';
+    document.getElementById('q-result-blurb').textContent = 'Your existing mortgage already uses the equity we could lend against. Consider refinancing into a single LivAround Finance facility — we can still help.';
+  } else if (loan < 50000) {
+    document.getElementById('q-result-title').innerHTML = 'Limited headroom available.';
+    document.getElementById('q-result-blurb').textContent = 'Your existing leverage caps how much we can add. The number below is the additional debt we could indicatively offer on top.';
+  }
+}
+</script>
+
+</body>
+</html>

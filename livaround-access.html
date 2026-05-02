@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LivAround Access · Fractional ownership flow</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --brand-600: #2563EB;
+    --brand-700: #1E4FBF;
+    --sun-300:   #FFD896;
+    --sun-500:   #FFB547;
+    --sun-700:   #C97A12;
+    --gold-tint: #FFF8E8;
+    --coral-100: #FFE2D8;
+    --coral-300: #FFAC95;
+    --coral-500: #FF7A59;
+    --coral-600: #E15A3A;
+    --coral-700: #B33D24;
+    --coral-tint:#FFEDE5;
+    --ink:       #0B2A3B;
+    --ink-soft:  #1A3F55;
+    --slate-50:  #F4F6FA;
+    --slate-100: #E7ECF2;
+    --slate-200: #D7DFE7;
+    --slate-300: #B6C2CD;
+    --slate-400: #8896A4;
+    --slate-500: #5C6E7E;
+    --slate-700: #2F4456;
+    --sand:      #FAFBFD;
+    --paper:     #FFFFFF;
+    --success:   #11A87B;
+    --success-100: #D2F1E5;
+
+    --r-pill: 999px;
+    --r-md: 12px;
+    --r-lg: 18px;
+    --r-xl: 24px;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --shadow-md: 0 6px 20px rgba(11,42,59,0.08);
+    --shadow-lg: 0 24px 60px rgba(11,42,59,0.10), 0 8px 20px rgba(11,42,59,0.06);
+    --shadow-coral: 0 18px 40px rgba(255,122,89,0.18), 0 6px 14px rgba(255,122,89,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: linear-gradient(180deg, #FFF7F4 0%, var(--sand) 30%, var(--sand) 100%);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    padding: 60px 40px 80px;
+  }
+
+  /* ============ DECK HEADER ============ */
+  .deck-header {
+    max-width: 1100px;
+    margin: 0 auto 60px;
+    text-align: center;
+  }
+  .vertical-pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 14px 8px 8px;
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-pill);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--coral-700);
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-md);
+  }
+  .vertical-pill::before {
+    content: '';
+    width: 22px; height: 22px;
+    background: var(--ink);
+    border-radius: 6px;
+    display: grid; place-items: center;
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'><path d='M3 11L12 4L21 11V20H14V14H10V20H3V11Z' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px 14px;
+  }
+  .vertical-pill .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--coral-500);
+    margin-right: 2px;
+  }
+  .deck-header h1 {
+    font-size: clamp(36px, 4.4vw, 56px);
+    letter-spacing: -0.028em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .deck-header h1 .em-coral { color: var(--coral-600); }
+  .deck-header h1 .em-sun { color: var(--sun-700); }
+  .deck-header p {
+    font-size: 17px;
+    color: var(--slate-700);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.55;
+  }
+  .deck-header p strong { color: var(--ink); font-weight: 600; }
+
+  /* ============ FLOW GRID ============ */
+  .flow-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 56px 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .step {
+    display: flex; flex-direction: column; align-items: center;
+    position: relative;
+  }
+  .step-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 18px;
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    background: var(--ink);
+    color: var(--coral-300);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .step-head h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .step .caption {
+    font-size: 13px;
+    color: var(--slate-500);
+    text-align: center;
+    margin-top: 18px;
+    max-width: 260px;
+    line-height: 1.5;
+  }
+  .step .caption strong { color: var(--ink); font-weight: 600; }
+
+  /* arrow connectors (top row only) */
+  .step .arrow {
+    position: absolute;
+    top: 240px; right: -32px;
+    width: 32px;
+    pointer-events: none;
+    color: var(--coral-500);
+    opacity: 0.55;
+  }
+  .step:nth-child(3n) .arrow { display: none; }
+
+  /* ============ PHONE FRAME ============ */
+  .phone {
+    width: 280px;
+    height: 580px;
+    background: var(--ink);
+    border-radius: 38px;
+    padding: 8px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .phone::before {
+    /* notch */
+    content: '';
+    position: absolute;
+    top: 8px; left: 50%;
+    transform: translateX(-50%);
+    width: 88px; height: 22px;
+    background: var(--ink);
+    border-radius: 0 0 14px 14px;
+    z-index: 10;
+  }
+  .phone::after {
+    /* notch sensor dot */
+    content: '';
+    position: absolute;
+    top: 14px; left: calc(50% + 26px);
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #1f3a4f;
+    z-index: 11;
+  }
+  .screen {
+    background: var(--sand);
+    border-radius: 30px;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+
+  /* status bar */
+  .status-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 22px 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .status-bar .icons {
+    display: flex; gap: 4px; align-items: center;
+  }
+
+  /* app header (per-screen) */
+  .app-header {
+    padding: 12px 18px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .app-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .app-title-small {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .icon-btn {
+    width: 28px; height: 28px;
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    cursor: pointer;
+  }
+  .icon-btn svg { width: 14px; height: 14px; color: var(--ink); }
+
+  /* scrollable body */
+  .app-body {
+    flex: 1;
+    overflow: hidden;
+    padding: 0 14px;
+  }
+
+  /* bottom nav */
+  .bottom-nav {
+    background: var(--paper);
+    border-top: 1px solid var(--slate-100);
+    padding: 8px 18px 22px;
+    display: flex; justify-content: space-between;
+  }
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    color: var(--slate-400);
+    font-size: 9px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .nav-item.is-active { color: var(--coral-600); }
+  .nav-item .ico {
+    width: 22px; height: 22px;
+    display: grid; place-items: center;
+  }
+  .nav-item svg { width: 18px; height: 18px; }
+
+  /* ============ SCREEN 1 · DISCOVER ============ */
+  .filter-row {
+    display: flex; gap: 5px;
+    padding: 0 14px 12px;
+    overflow: hidden;
+  }
+  .chip {
+    padding: 4px 8px;
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-pill);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--slate-700);
+    white-space: nowrap;
+    display: flex; align-items: center; gap: 3px;
+  }
+  .chip.is-active {
+    background: var(--ink);
+    color: var(--coral-300);
+    border-color: var(--ink);
+  }
+
+  .hero-property {
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(11,42,59,0.04);
+  }
+  .hero-illust {
+    height: 110px;
+    position: relative;
+    background: linear-gradient(180deg, #FFE7B8 0%, #FFCB6E 60%, #FFB547 100%);
+    overflow: hidden;
+  }
+  .hero-illust svg { width: 100%; height: 100%; display: block; }
+  .hero-illust .badge {
+    position: absolute;
+    top: 8px; left: 8px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(6px);
+    border-radius: var(--r-pill);
+    padding: 3px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .hero-illust .yield-pill {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: var(--ink);
+    color: var(--sun-300);
+    border-radius: var(--r-pill);
+    padding: 3px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .hero-property-body {
+    padding: 10px 12px 12px;
+  }
+  .hero-property-body .name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .hero-property-body .loc {
+    font-size: 10px;
+    color: var(--slate-500);
+    margin-bottom: 8px;
+  }
+  .progress-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 4px;
+  }
+  .progress-row span:first-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--coral-700);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .progress-row span:last-child {
+    font-size: 10px;
+    color: var(--slate-500);
+  }
+  .progress-bar {
+    height: 4px;
+    background: var(--slate-100);
+    border-radius: var(--r-pill);
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--coral-500), var(--coral-600));
+    border-radius: var(--r-pill);
+  }
+  .price-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--slate-100);
+  }
+  .price-row .min {
+    font-size: 10px;
+    color: var(--slate-500);
+  }
+  .price-row .min strong {
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  .small-property-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .small-property {
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(11,42,59,0.04);
+  }
+  .small-property-illust {
+    height: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .small-property-illust svg { width: 100%; height: 100%; display: block; }
+  .small-property-body {
+    padding: 7px 9px 9px;
+  }
+  .small-property-body .name {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 1px;
+    line-height: 1.2;
+  }
+  .small-property-body .loc {
+    font-size: 9px;
+    color: var(--slate-500);
+    margin-bottom: 5px;
+  }
+  .small-property-body .yield {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--sun-700);
+  }
+  .small-property-body .min {
+    font-size: 9px;
+    color: var(--slate-500);
+    margin-top: 1px;
+  }
+
+  /* ============ SCREEN 2 · DETAIL ============ */
+  .detail-hero {
+    height: 160px;
+    margin: 0 -14px 14px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #FFE7B8 0%, #FFCB6E 60%, #FFB547 100%);
+  }
+  .detail-hero svg { width: 100%; height: 100%; display: block; }
+  .detail-hero .top-bar {
+    position: absolute;
+    top: 12px; left: 12px; right: 12px;
+    display: flex; justify-content: space-between;
+  }
+  .detail-hero .icon-btn-dark {
+    width: 28px; height: 28px;
+    background: rgba(11,42,59,0.6);
+    backdrop-filter: blur(6px);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    color: white;
+  }
+  .detail-hero .icon-btn-dark svg { width: 14px; height: 14px; color: white; }
+
+  .detail-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 3px;
+  }
+  .detail-loc {
+    font-size: 11px;
+    color: var(--slate-500);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .tag-row {
+    display: flex; gap: 5px; flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .tag {
+    padding: 3px 7px;
+    background: var(--coral-tint);
+    border-radius: var(--r-pill);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--coral-700);
+    letter-spacing: 0.06em;
+  }
+  .tag.tag-sun { background: var(--gold-tint); color: var(--sun-700); }
+  .tag.tag-success { background: var(--success-100); color: var(--success); }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .stat-tile {
+    padding: 9px 10px;
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-md);
+  }
+  .stat-tile .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--slate-500);
+    margin-bottom: 2px;
+  }
+  .stat-tile .val {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .stat-tile .val.sun { color: var(--sun-700); }
+  .stat-tile .val.coral { color: var(--coral-600); }
+
+  .funding-card {
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-md);
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+  .funding-card-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .funding-card-head .num {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .funding-card-head .num span {
+    color: var(--coral-600);
+  }
+  .funding-card-head .target {
+    font-size: 10px;
+    color: var(--slate-500);
+  }
+  .funding-card-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+  }
+  .funding-card-foot .pct { color: var(--coral-700); font-weight: 700; }
+  .funding-card-foot .investors { color: var(--slate-500); }
+
+  .why-section h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--slate-500);
+    margin-bottom: 8px;
+  }
+  .why-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 14px;
+  }
+  .why-section li {
+    display: flex; gap: 8px; align-items: flex-start;
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--slate-700);
+    margin-bottom: 6px;
+  }
+  .why-section li::before {
+    content: '✓';
+    color: var(--coral-600);
+    font-weight: 700;
+    flex-shrink: 0;
+    width: 12px;
+  }
+
+  .floating-cta {
+    position: absolute;
+    bottom: 18px; left: 14px; right: 14px;
+    background: var(--coral-500);
+    color: white;
+    border-radius: var(--r-pill);
+    padding: 12px 18px;
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    box-shadow: var(--shadow-coral);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .floating-cta .arrow-r {
+    background: rgba(255,255,255,0.22);
+    border-radius: 50%;
+    width: 22px; height: 22px;
+    display: grid; place-items: center;
+  }
+
+  /* ============ SCREEN 3 · BUY FLOW ============ */
+  .buy-property-mini {
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-md);
+    padding: 8px;
+    display: flex; gap: 10px; align-items: center;
+    margin-bottom: 18px;
+  }
+  .buy-property-mini-thumb {
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: linear-gradient(180deg, #FFE7B8 0%, #FFCB6E 100%);
+  }
+  .buy-property-mini-thumb svg { width: 100%; height: 100%; display: block; }
+  .buy-property-mini .name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .buy-property-mini .loc {
+    font-size: 10px;
+    color: var(--slate-500);
+  }
+  .buy-property-mini .yield {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--sun-700);
+    margin-top: 1px;
+  }
+
+  .buy-q {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--slate-500);
+    margin-bottom: 8px;
+  }
+  .buy-amount {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .buy-amount .amount {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .buy-amount .currency {
+    font-size: 22px;
+    color: var(--slate-500);
+    font-weight: 600;
+    margin-right: 2px;
+    vertical-align: top;
+  }
+  .buy-amount .helper {
+    font-size: 11px;
+    color: var(--slate-500);
+  }
+  .quick-pick-row {
+    display: flex; gap: 6px;
+    margin-bottom: 18px;
+  }
+  .quick-pick {
+    flex: 1;
+    padding: 7px 6px;
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-pill);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--slate-700);
+    text-align: center;
+  }
+  .quick-pick.is-active {
+    background: var(--ink);
+    color: var(--coral-300);
+    border-color: var(--ink);
+  }
+
+  .yield-projection {
+    background: var(--gold-tint);
+    border: 1px solid #FFE8BF;
+    border-radius: var(--r-md);
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+  .yield-projection .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--sun-700);
+    margin-bottom: 4px;
+  }
+  .yield-projection .val {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .yield-projection .val .accent { color: var(--sun-700); }
+  .yield-projection .sub {
+    font-size: 10px;
+    color: var(--slate-500);
+    margin-top: 2px;
+  }
+
+  /* ============ SCREEN 4 · CONFIRMATION ============ */
+  .confirm-stage {
+    flex: 1;
+    display: flex; flex-direction: column;
+    padding: 16px 18px;
+  }
+  .success-art {
+    width: 88px; height: 88px;
+    margin: 18px auto 18px;
+    background: var(--coral-tint);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    position: relative;
+  }
+  .success-art::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,122,89,0.2), transparent 65%);
+  }
+  .success-art .check {
+    width: 44px; height: 44px;
+    background: var(--coral-500);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    color: white;
+    box-shadow: 0 6px 16px rgba(255,122,89,0.42);
+    z-index: 1;
+  }
+  .success-art .check svg { width: 22px; height: 22px; }
+  .confirm-headline {
+    text-align: center;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .confirm-sub {
+    text-align: center;
+    font-size: 12px;
+    color: var(--slate-500);
+    margin-bottom: 18px;
+    line-height: 1.45;
+  }
+  .receipt {
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-md);
+    padding: 12px 14px;
+    margin-bottom: 14px;
+  }
+  .receipt-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px dashed var(--slate-100);
+    font-size: 11px;
+  }
+  .receipt-row:last-child { border-bottom: 0; }
+  .receipt-row .lbl {
+    color: var(--slate-500);
+  }
+  .receipt-row .val {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .receipt-row .val.coral { color: var(--coral-600); }
+  .receipt-row .val.mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+  }
+  .confirm-actions {
+    display: flex; flex-direction: column; gap: 8px;
+    margin-top: auto;
+  }
+  .btn-coral {
+    background: var(--coral-500);
+    color: white;
+    border-radius: var(--r-pill);
+    padding: 12px;
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    box-shadow: var(--shadow-coral);
+    border: none;
+    cursor: pointer;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--slate-200);
+    border-radius: var(--r-pill);
+    padding: 12px;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  /* ============ SCREEN 5 · PORTFOLIO ============ */
+  .portfolio-summary {
+    background: linear-gradient(135deg, var(--ink) 0%, #1a3f55 100%);
+    color: white;
+    border-radius: var(--r-lg);
+    padding: 14px 14px 14px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .portfolio-summary::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(255,122,89,0.20), transparent 65%);
+  }
+  .portfolio-summary .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--coral-300);
+    margin-bottom: 2px;
+    position: relative;
+  }
+  .portfolio-summary .val {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .portfolio-summary .change {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(17,168,123,0.18);
+    border-radius: var(--r-pill);
+    padding: 3px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #4FCF99;
+    margin-left: 8px;
+  }
+  .portfolio-summary-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+  }
+  .portfolio-summary-stat .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: rgba(255,172,149,0.7);
+  }
+  .portfolio-summary-stat .val {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0;
+  }
+
+  .holdings-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 4px 2px 6px;
+  }
+  .holdings-head h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--slate-500);
+  }
+  .holdings-head .count {
+    font-size: 10px;
+    color: var(--slate-400);
+  }
+
+  .holding-row {
+    display: flex; gap: 10px; align-items: center;
+    padding: 8px 4px;
+    border-bottom: 1px solid var(--slate-100);
+  }
+  .holding-row:last-child { border-bottom: 0; }
+  .holding-thumb {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .holding-thumb svg { width: 100%; height: 100%; display: block; }
+  .holding-info { flex: 1; min-width: 0; }
+  .holding-info .name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .holding-info .meta {
+    font-size: 10px;
+    color: var(--slate-500);
+    margin-top: 1px;
+  }
+  .holding-stat {
+    text-align: right;
+  }
+  .holding-stat .val {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .holding-stat .yield {
+    font-size: 10px;
+    color: var(--success);
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ============ SCREEN 6 · YIELD ============ */
+  .month-tabs {
+    display: flex; gap: 2px;
+    background: var(--paper);
+    border-radius: var(--r-pill);
+    padding: 3px;
+    border: 1px solid var(--slate-100);
+    margin-bottom: 14px;
+  }
+  .month-tab {
+    flex: 1;
+    text-align: center;
+    padding: 6px;
+    border-radius: var(--r-pill);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--slate-500);
+  }
+  .month-tab.is-active {
+    background: var(--ink);
+    color: var(--coral-300);
+  }
+  .payout-card {
+    background: linear-gradient(135deg, var(--coral-500) 0%, var(--coral-600) 100%);
+    color: white;
+    border-radius: var(--r-lg);
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-coral);
+    position: relative;
+    overflow: hidden;
+  }
+  .payout-card::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 65%);
+  }
+  .payout-card .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    opacity: 0.85;
+    position: relative;
+  }
+  .payout-card .val {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    position: relative;
+  }
+  .payout-card .sub {
+    font-size: 11px;
+    opacity: 0.8;
+    margin-top: 4px;
+    position: relative;
+  }
+
+  .breakdown-row {
+    display: flex; gap: 8px; align-items: center;
+    padding: 7px 4px;
+  }
+  .breakdown-thumb {
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .breakdown-thumb svg { width: 100%; height: 100%; display: block; }
+  .breakdown-name {
+    flex: 1;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .breakdown-amount {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--success);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .yield-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--slate-100);
+  }
+  .yield-action {
+    padding: 9px;
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-md);
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+  }
+  .yield-action.primary {
+    background: var(--ink);
+    color: var(--coral-300);
+    border-color: var(--ink);
+  }
+  .yield-action .icon {
+    font-size: 14px;
+  }
+
+  /* ============ FOOTER ============ */
+  .deck-footer {
+    max-width: 1100px;
+    margin: 80px auto 0;
+    padding: 30px 0 0;
+    border-top: 1px solid var(--slate-100);
+    text-align: center;
+  }
+  .deck-footer p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--slate-500);
+    letter-spacing: 0.06em;
+  }
+  .deck-footer p strong {
+    color: var(--coral-700);
+  }
+
+  @media (max-width: 1100px) {
+    .flow-grid { grid-template-columns: repeat(2, 1fr); }
+    .step .arrow { display: none !important; }
+  }
+  @media (max-width: 720px) {
+    .flow-grid { grid-template-columns: 1fr; }
+    body { padding: 30px 20px 50px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ DECK HEADER ============ -->
+<header class="deck-header">
+  <div class="vertical-pill">
+    <span class="dot"></span>livaround access
+  </div>
+  <h1>Own a slice. <span class="em-coral">From £100.</span></h1>
+  <p>
+    Fractional ownership of yielding STR property in Dubai, Phuket and London.
+    Buy a share. Earn the <strong>yield</strong>. Sell whenever. Below: the end-to-end flow,
+    from discovery through monthly payouts.
+  </p>
+</header>
+
+<!-- ============ FLOW ============ -->
+<div class="flow-grid">
+
+  <!-- ====== SCREEN 1 · DISCOVER ====== -->
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">01</div>
+      <h3>Discover</h3>
+    </div>
+    <div class="phone">
+      <div class="screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="icons">
+            <svg width="13" height="9" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="2.5" height="4" rx="0.5"/><rect x="3.5" y="6" width="2.5" height="6" rx="0.5"/><rect x="7" y="3" width="2.5" height="9" rx="0.5"/><rect x="10.5" y="0" width="2.5" height="12" rx="0.5"/></svg>
+            <svg width="14" height="9" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="3" width="14" height="6" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="2" y="5" width="9" height="2" fill="currentColor"/><rect x="15" y="5" width="1.5" height="2" rx="0.5" fill="currentColor"/></svg>
+          </div>
+        </div>
+        <div class="app-header">
+          <div class="app-title">Discover</div>
+          <div class="icon-btn">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+        <div class="filter-row">
+          <span class="chip is-active">All</span>
+          <span class="chip">🇦🇪 Dubai</span>
+          <span class="chip">🇹🇭 Phuket</span>
+          <span class="chip">🇬🇧 London</span>
+        </div>
+        <div class="app-body">
+          <!-- Hero property: Dubai Marina Studio -->
+          <div class="hero-property">
+            <div class="hero-illust">
+              <svg viewBox="0 0 280 110" preserveAspectRatio="xMidYMax meet">
+                <circle cx="40" cy="30" r="14" fill="white" opacity="0.45"/>
+                <g fill="#0B2A3B" opacity="0.85">
+                  <rect x="20" y="55" width="14" height="55"/>
+                  <rect x="38" y="40" width="10" height="70"/>
+                </g>
+                <path d="M125 110 L125 18 L130 12 L135 18 L140 12 L145 18 L145 110 Z" fill="#0B2A3B"/>
+                <rect x="123" y="35" width="24" height="75" fill="#0B2A3B"/>
+                <rect x="95" y="45" width="22" height="65" fill="#0B2A3B"/>
+                <polygon points="95,45 106,28 117,45" fill="#0B2A3B"/>
+                <rect x="155" y="40" width="20" height="70" fill="#0B2A3B"/>
+                <polygon points="155,40 165,22 175,40" fill="#0B2A3B"/>
+                <rect x="180" y="55" width="16" height="55" fill="#0B2A3B" opacity="0.85"/>
+                <rect x="200" y="50" width="14" height="60" fill="#0B2A3B" opacity="0.85"/>
+                <rect x="220" y="60" width="18" height="50" fill="#0B2A3B" opacity="0.7"/>
+                <rect x="245" y="65" width="14" height="45" fill="#0B2A3B" opacity="0.7"/>
+                <g fill="#FFB547">
+                  <rect x="100" y="55" width="2" height="2"/><rect x="106" y="55" width="2" height="2"/><rect x="112" y="55" width="2" height="2"/>
+                  <rect x="100" y="65" width="2" height="2"/><rect x="106" y="65" width="2" height="2"/><rect x="112" y="65" width="2" height="2"/>
+                  <rect x="100" y="75" width="2" height="2"/><rect x="106" y="75" width="2" height="2"/><rect x="112" y="75" width="2" height="2"/>
+                  <rect x="128" y="50" width="2" height="2"/><rect x="135" y="50" width="2" height="2"/><rect x="142" y="50" width="2" height="2"/>
+                  <rect x="128" y="65" width="2" height="2"/><rect x="135" y="65" width="2" height="2"/><rect x="142" y="65" width="2" height="2"/>
+                  <rect x="128" y="80" width="2" height="2"/><rect x="135" y="80" width="2" height="2"/><rect x="142" y="80" width="2" height="2"/>
+                  <rect x="160" y="55" width="2" height="2"/><rect x="166" y="55" width="2" height="2"/>
+                  <rect x="160" y="68" width="2" height="2"/><rect x="166" y="68" width="2" height="2"/>
+                  <rect x="160" y="82" width="2" height="2"/><rect x="166" y="82" width="2" height="2"/>
+                </g>
+              </svg>
+              <span class="badge">🇦🇪 Dubai Marina</span>
+              <span class="yield-pill">8.4% yield</span>
+            </div>
+            <div class="hero-property-body">
+              <div class="name">Marina Studio</div>
+              <div class="loc">Premium 1-bed · STR-verified</div>
+              <div class="progress-row">
+                <span>67% funded</span>
+                <span>£59k to go</span>
+              </div>
+              <div class="progress-bar"><div class="progress-bar-fill" style="width:67%"></div></div>
+              <div class="price-row">
+                <span class="min">From <strong>£100</strong> / share</span>
+                <span class="min">1,800 shares</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Smaller cards -->
+          <div class="small-property-grid">
+            <div class="small-property">
+              <div class="small-property-illust" style="background: linear-gradient(180deg, #FFD3C2 0%, #FFAC95 60%, #FF7A59 100%);">
+                <svg viewBox="0 0 140 60" preserveAspectRatio="xMidYMax meet">
+                  <path d="M0 60 L0 35 Q40 25 80 32 Q110 38 140 30 L140 60 Z" fill="#FF7A59" opacity="0.6"/>
+                  <g>
+                    <path d="M20 60 Q20 42 24 32" stroke="#0B2A3B" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <g fill="#0B2A3B"><path d="M24 32 Q34 26 44 28 Q34 33 24 32"/><path d="M24 32 Q18 22 12 20 Q20 28 24 32"/></g>
+                    <path d="M120 60 Q120 44 116 36" stroke="#0B2A3B" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <g fill="#0B2A3B"><path d="M116 36 Q126 30 136 32 Q126 37 116 36"/><path d="M116 36 Q108 26 100 24 Q110 32 116 36"/></g>
+                  </g>
+                  <rect x="50" y="38" width="40" height="22" fill="#0B2A3B"/>
+                  <polygon points="48,38 70,28 92,38" fill="#0B2A3B"/>
+                  <rect x="56" y="44" width="6" height="6" fill="#FFB547"/>
+                  <rect x="68" y="44" width="6" height="6" fill="#FFB547"/>
+                  <rect x="80" y="44" width="6" height="6" fill="#FFB547"/>
+                  <rect x="66" y="52" width="8" height="8" fill="#FF7A59"/>
+                </svg>
+              </div>
+              <div class="small-property-body">
+                <div class="name">Surin Villa</div>
+                <div class="loc">🇹🇭 Phuket</div>
+                <div class="yield">7.2%</div>
+                <div class="min">£100 min</div>
+              </div>
+            </div>
+            <div class="small-property">
+              <div class="small-property-illust" style="background: linear-gradient(180deg, #DCE7FD 0%, #88A8F8 60%, #4574F0 100%);">
+                <svg viewBox="0 0 140 60" preserveAspectRatio="xMidYMax meet">
+                  <g fill="#1E4FBF" opacity="0.4">
+                    <rect x="118" y="22" width="11" height="38"/>
+                    <polygon points="118,22 123,12 128,22"/>
+                  </g>
+                  <g>
+                    <rect x="10" y="28" width="28" height="32" fill="#0B2A3B"/>
+                    <polygon points="10,28 24,18 38,28" fill="#0B2A3B"/>
+                    <rect x="14" y="32" width="6" height="8" fill="#FFD896"/>
+                    <rect x="28" y="32" width="6" height="8" fill="#FFD896"/>
+                    <rect x="14" y="44" width="6" height="8" fill="#FFD896"/>
+                    <rect x="20" y="52" width="8" height="8" fill="#FF7A59"/>
+                    <rect x="38" y="28" width="28" height="32" fill="#0B2A3B"/>
+                    <polygon points="38,28 52,18 66,28" fill="#0B2A3B"/>
+                    <rect x="42" y="32" width="6" height="8" fill="#FFD896"/>
+                    <rect x="56" y="32" width="6" height="8" fill="#FFD896"/>
+                    <rect x="42" y="44" width="6" height="8" fill="#FFD896"/>
+                    <rect x="48" y="52" width="8" height="8" fill="#0B2A3B"/>
+                    <rect x="66" y="28" width="28" height="32" fill="#0B2A3B"/>
+                    <polygon points="66,28 80,18 94,28" fill="#0B2A3B"/>
+                    <rect x="70" y="32" width="6" height="8" fill="#FFD896"/>
+                    <rect x="84" y="32" width="6" height="8" fill="#FFD896"/>
+                    <rect x="70" y="44" width="6" height="8" fill="#FFD896"/>
+                    <rect x="76" y="52" width="8" height="8" fill="#FF7A59"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="small-property-body">
+                <div class="name">Shoreditch Loft</div>
+                <div class="loc">🇬🇧 London</div>
+                <div class="yield">5.8%</div>
+                <div class="min">£100 min</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item is-active">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+            Discover
+          </div>
+          <div class="nav-item">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/></svg></div>
+            Portfolio
+          </div>
+          <div class="nav-item">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><path d="M3 17l4-4 4 4 7-7 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            Activity
+          </div>
+          <div class="nav-item">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+            Profile
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Browse <strong>STR-yielding properties</strong> across three cities. Filter by location, yield, or funding status.</p>
+    <svg class="arrow" viewBox="0 0 32 24" fill="none"><path d="M2 12h26m-6-7l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 4"/></svg>
+  </div>
+
+  <!-- ====== SCREEN 2 · PROPERTY DETAIL ====== -->
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">02</div>
+      <h3>Inspect</h3>
+    </div>
+    <div class="phone">
+      <div class="screen">
+        <div class="status-bar">
+          <span>9:42</span>
+          <div class="icons">
+            <svg width="13" height="9" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="2.5" height="4" rx="0.5"/><rect x="3.5" y="6" width="2.5" height="6" rx="0.5"/><rect x="7" y="3" width="2.5" height="9" rx="0.5"/><rect x="10.5" y="0" width="2.5" height="12" rx="0.5"/></svg>
+            <svg width="14" height="9" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="3" width="14" height="6" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="2" y="5" width="9" height="2" fill="currentColor"/></svg>
+          </div>
+        </div>
+        <div class="app-body" style="padding: 0; flex: 1; overflow: hidden;">
+          <div class="detail-hero">
+            <svg viewBox="0 0 280 160" preserveAspectRatio="xMidYMax meet">
+              <circle cx="50" cy="40" r="20" fill="white" opacity="0.5"/>
+              <g fill="#0B2A3B" opacity="0.8">
+                <rect x="10" y="80" width="20" height="80"/>
+                <rect x="35" y="60" width="14" height="100"/>
+              </g>
+              <path d="M125 160 L125 25 L130 18 L135 25 L140 18 L145 25 L150 18 L155 25 L155 160 Z" fill="#0B2A3B"/>
+              <rect x="123" y="40" width="34" height="120" fill="#0B2A3B"/>
+              <rect x="90" y="55" width="28" height="105" fill="#0B2A3B"/>
+              <polygon points="90,55 104,30 118,55" fill="#0B2A3B"/>
+              <rect x="160" y="48" width="26" height="112" fill="#0B2A3B"/>
+              <polygon points="160,48 173,22 186,48" fill="#0B2A3B"/>
+              <rect x="195" y="70" width="20" height="90" fill="#0B2A3B" opacity="0.85"/>
+              <rect x="220" y="65" width="18" height="95" fill="#0B2A3B" opacity="0.85"/>
+              <rect x="245" y="80" width="22" height="80" fill="#0B2A3B" opacity="0.7"/>
+              <g fill="#FFB547">
+                <rect x="95" y="68" width="3" height="3"/><rect x="103" y="68" width="3" height="3"/><rect x="111" y="68" width="3" height="3"/>
+                <rect x="95" y="82" width="3" height="3"/><rect x="103" y="82" width="3" height="3"/><rect x="111" y="82" width="3" height="3"/>
+                <rect x="95" y="96" width="3" height="3"/><rect x="103" y="96" width="3" height="3"/><rect x="111" y="96" width="3" height="3"/>
+                <rect x="128" y="58" width="3" height="3"/><rect x="138" y="58" width="3" height="3"/><rect x="148" y="58" width="3" height="3"/>
+                <rect x="128" y="75" width="3" height="3"/><rect x="138" y="75" width="3" height="3"/><rect x="148" y="75" width="3" height="3"/>
+                <rect x="128" y="92" width="3" height="3"/><rect x="138" y="92" width="3" height="3"/><rect x="148" y="92" width="3" height="3"/>
+                <rect x="128" y="109" width="3" height="3"/><rect x="138" y="109" width="3" height="3"/><rect x="148" y="109" width="3" height="3"/>
+                <rect x="165" y="63" width="3" height="3"/><rect x="174" y="63" width="3" height="3"/><rect x="183" y="63" width="3" height="3"/>
+                <rect x="165" y="80" width="3" height="3"/><rect x="174" y="80" width="3" height="3"/><rect x="183" y="80" width="3" height="3"/>
+                <rect x="165" y="97" width="3" height="3"/><rect x="174" y="97" width="3" height="3"/><rect x="183" y="97" width="3" height="3"/>
+              </g>
+            </svg>
+            <div class="top-bar">
+              <div class="icon-btn-dark">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="icon-btn-dark">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M16 6l-4-4-4 4M12 2v14M21 16v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 0 14px;">
+            <div class="detail-title">Marina Studio</div>
+            <div class="detail-loc">📍 Dubai Marina, UAE · 5.0 ★ avg</div>
+            <div class="tag-row">
+              <span class="tag tag-success">✓ STR-verified</span>
+              <span class="tag tag-sun">8.4% gross yield</span>
+              <span class="tag">Premium</span>
+            </div>
+            <div class="stats-grid">
+              <div class="stat-tile">
+                <div class="lbl">Property value</div>
+                <div class="val">£180,000</div>
+              </div>
+              <div class="stat-tile">
+                <div class="lbl">Min buy-in</div>
+                <div class="val coral">£100</div>
+              </div>
+              <div class="stat-tile">
+                <div class="lbl">12-mo trading</div>
+                <div class="val">£14,300</div>
+              </div>
+              <div class="stat-tile">
+                <div class="lbl">Occupancy</div>
+                <div class="val">78%</div>
+              </div>
+            </div>
+            <div class="funding-card">
+              <div class="funding-card-head">
+                <div class="num"><span>£121,000</span> raised</div>
+                <div class="target">of £180,000</div>
+              </div>
+              <div class="progress-bar"><div class="progress-bar-fill" style="width:67%"></div></div>
+              <div class="funding-card-foot">
+                <span class="pct">67% FUNDED</span>
+                <span class="investors">1,213 owners</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="floating-cta">
+          Buy from £100
+          <span class="arrow-r">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m-3-3l3 3-3 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+    <p class="caption">See the property's <strong>operating history</strong> — occupancy, gross revenue, current funding status, and live owner count.</p>
+    <svg class="arrow" viewBox="0 0 32 24" fill="none"><path d="M2 12h26m-6-7l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 4"/></svg>
+  </div>
+
+  <!-- ====== SCREEN 3 · BUY ====== -->
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">03</div>
+      <h3>Invest</h3>
+    </div>
+    <div class="phone">
+      <div class="screen">
+        <div class="status-bar">
+          <span>9:43</span>
+          <div class="icons">
+            <svg width="13" height="9" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="2.5" height="4" rx="0.5"/><rect x="3.5" y="6" width="2.5" height="6" rx="0.5"/><rect x="7" y="3" width="2.5" height="9" rx="0.5"/><rect x="10.5" y="0" width="2.5" height="12" rx="0.5"/></svg>
+            <svg width="14" height="9" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="3" width="14" height="6" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="2" y="5" width="9" height="2" fill="currentColor"/></svg>
+          </div>
+        </div>
+        <div class="app-header">
+          <div class="icon-btn">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="app-title-small">Buy share</div>
+          <div class="icon-btn">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="buy-property-mini">
+            <div class="buy-property-mini-thumb">
+              <svg viewBox="0 0 44 44" preserveAspectRatio="xMidYMax meet">
+                <path d="M22 44 L22 8 L24 5 L26 8 L26 44 Z" fill="#0B2A3B"/>
+                <rect x="21" y="14" width="6" height="30" fill="#0B2A3B"/>
+                <rect x="13" y="18" width="6" height="26" fill="#0B2A3B"/>
+                <rect x="29" y="16" width="6" height="28" fill="#0B2A3B"/>
+                <g fill="#FFB547">
+                  <rect x="14" y="22" width="1" height="1"/><rect x="17" y="22" width="1" height="1"/>
+                  <rect x="14" y="28" width="1" height="1"/><rect x="17" y="28" width="1" height="1"/>
+                  <rect x="22" y="20" width="1" height="1"/><rect x="25" y="20" width="1" height="1"/>
+                  <rect x="22" y="28" width="1" height="1"/><rect x="25" y="28" width="1" height="1"/>
+                  <rect x="30" y="22" width="1" height="1"/><rect x="33" y="22" width="1" height="1"/>
+                </g>
+              </svg>
+            </div>
+            <div style="flex:1">
+              <div class="name">Marina Studio</div>
+              <div class="loc">🇦🇪 Dubai · £180k value</div>
+              <div class="yield">8.4% expected yield</div>
+            </div>
+          </div>
+          <div class="buy-q">Investment amount</div>
+          <div class="buy-amount">
+            <div class="amount"><span class="currency">£</span>100</div>
+            <div class="helper">= 1 share at £100/share</div>
+          </div>
+          <div class="quick-pick-row">
+            <span class="quick-pick is-active">£100</span>
+            <span class="quick-pick">£250</span>
+            <span class="quick-pick">£500</span>
+            <span class="quick-pick">£1,000</span>
+          </div>
+          <div class="yield-projection">
+            <div class="lbl">Projected annual yield</div>
+            <div class="val"><span class="accent">£8.40</span> / year</div>
+            <div class="sub">Paid monthly · ~£0.70 every month from STR revenue</div>
+          </div>
+        </div>
+        <div class="floating-cta">
+          Confirm — £100
+          <span class="arrow-r">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m-3-3l3 3-3 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Pick your <strong>investment amount</strong>. £100 buys 1 share — projected yield calculated in real-time from the property's STR revenue.</p>
+  </div>
+
+  <!-- ====== SCREEN 4 · CONFIRMATION ====== -->
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">04</div>
+      <h3>Own</h3>
+    </div>
+    <div class="phone">
+      <div class="screen">
+        <div class="status-bar">
+          <span>9:43</span>
+          <div class="icons">
+            <svg width="13" height="9" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="2.5" height="4" rx="0.5"/><rect x="3.5" y="6" width="2.5" height="6" rx="0.5"/><rect x="7" y="3" width="2.5" height="9" rx="0.5"/><rect x="10.5" y="0" width="2.5" height="12" rx="0.5"/></svg>
+            <svg width="14" height="9" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="3" width="14" height="6" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="2" y="5" width="9" height="2" fill="currentColor"/></svg>
+          </div>
+        </div>
+        <div class="confirm-stage">
+          <div class="success-art">
+            <div class="check">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+          <div class="confirm-headline">You're an owner.</div>
+          <div class="confirm-sub">You now own <strong>1 / 1,800</strong> of Marina Studio,<br>Dubai Marina.</div>
+          <div class="receipt">
+            <div class="receipt-row">
+              <span class="lbl">Property</span>
+              <span class="val">Marina Studio</span>
+            </div>
+            <div class="receipt-row">
+              <span class="lbl">Shares purchased</span>
+              <span class="val">1</span>
+            </div>
+            <div class="receipt-row">
+              <span class="lbl">Amount</span>
+              <span class="val coral">£100.00</span>
+            </div>
+            <div class="receipt-row">
+              <span class="lbl">Date</span>
+              <span class="val">15 Mar 2026</span>
+            </div>
+            <div class="receipt-row">
+              <span class="lbl">Transaction</span>
+              <span class="val mono">LVA-A39271</span>
+            </div>
+          </div>
+          <div class="confirm-actions">
+            <button class="btn-coral">View in portfolio</button>
+            <button class="btn-ghost">Buy more shares</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Instant settlement on share purchase. Your <strong>ownership</strong> and <strong>monthly yield rights</strong> are recorded against your account.</p>
+    <svg class="arrow" viewBox="0 0 32 24" fill="none"><path d="M2 12h26m-6-7l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 4"/></svg>
+  </div>
+
+  <!-- ====== SCREEN 5 · PORTFOLIO ====== -->
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">05</div>
+      <h3>Portfolio</h3>
+    </div>
+    <div class="phone">
+      <div class="screen">
+        <div class="status-bar">
+          <span>9:44</span>
+          <div class="icons">
+            <svg width="13" height="9" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="2.5" height="4" rx="0.5"/><rect x="3.5" y="6" width="2.5" height="6" rx="0.5"/><rect x="7" y="3" width="2.5" height="9" rx="0.5"/><rect x="10.5" y="0" width="2.5" height="12" rx="0.5"/></svg>
+            <svg width="14" height="9" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="3" width="14" height="6" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="2" y="5" width="9" height="2" fill="currentColor"/></svg>
+          </div>
+        </div>
+        <div class="app-header">
+          <div class="app-title">Portfolio</div>
+          <div class="icon-btn">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7 21a2 2 0 01-3.4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="portfolio-summary">
+            <div class="lbl">Total portfolio value</div>
+            <div class="val">£428.40 <span class="change">+7.1%</span></div>
+            <div class="portfolio-summary-stats">
+              <div class="portfolio-summary-stat">
+                <div class="lbl">Invested</div>
+                <div class="val">£400</div>
+              </div>
+              <div class="portfolio-summary-stat">
+                <div class="lbl">Monthly income</div>
+                <div class="val">£2.48</div>
+              </div>
+            </div>
+          </div>
+          <div class="holdings-head">
+            <h4>Your properties</h4>
+            <span class="count">3 holdings</span>
+          </div>
+          <div class="holding-row">
+            <div class="holding-thumb" style="background: linear-gradient(180deg, #FFE7B8, #FFB547);">
+              <svg viewBox="0 0 36 36" preserveAspectRatio="xMidYMax meet">
+                <path d="M18 36 L18 6 L20 4 L22 6 L22 36 Z" fill="#0B2A3B"/>
+                <rect x="17" y="11" width="6" height="25" fill="#0B2A3B"/>
+                <rect x="10" y="14" width="5" height="22" fill="#0B2A3B"/>
+                <rect x="25" y="13" width="5" height="23" fill="#0B2A3B"/>
+              </svg>
+            </div>
+            <div class="holding-info">
+              <div class="name">Marina Studio</div>
+              <div class="meta">2 shares · £200 · 🇦🇪</div>
+            </div>
+            <div class="holding-stat">
+              <div class="val">£214</div>
+              <div class="yield">+£1.40/mo</div>
+            </div>
+          </div>
+          <div class="holding-row">
+            <div class="holding-thumb" style="background: linear-gradient(180deg, #FFD3C2, #FF7A59);">
+              <svg viewBox="0 0 36 36" preserveAspectRatio="xMidYMax meet">
+                <path d="M0 36 L0 22 Q12 17 24 19 Q30 21 36 18 L36 36 Z" fill="#FF7A59" opacity="0.6"/>
+                <rect x="11" y="20" width="14" height="16" fill="#0B2A3B"/>
+                <polygon points="10,20 18,14 26,20" fill="#0B2A3B"/>
+                <rect x="14" y="24" width="3" height="3" fill="#FFB547"/>
+                <rect x="19" y="24" width="3" height="3" fill="#FFB547"/>
+              </svg>
+            </div>
+            <div class="holding-info">
+              <div class="name">Surin Villa</div>
+              <div class="meta">1 share · £100 · 🇹🇭</div>
+            </div>
+            <div class="holding-stat">
+              <div class="val">£106</div>
+              <div class="yield">+£0.60/mo</div>
+            </div>
+          </div>
+          <div class="holding-row">
+            <div class="holding-thumb" style="background: linear-gradient(180deg, #DCE7FD, #4574F0);">
+              <svg viewBox="0 0 36 36" preserveAspectRatio="xMidYMax meet">
+                <rect x="4" y="12" width="9" height="24" fill="#0B2A3B"/>
+                <polygon points="4,12 8.5,8 13,12" fill="#0B2A3B"/>
+                <rect x="13" y="12" width="9" height="24" fill="#0B2A3B"/>
+                <polygon points="13,12 17.5,8 22,12" fill="#0B2A3B"/>
+                <rect x="22" y="12" width="9" height="24" fill="#0B2A3B"/>
+                <polygon points="22,12 26.5,8 31,12" fill="#0B2A3B"/>
+                <g fill="#FFD896">
+                  <rect x="6" y="16" width="2" height="3"/><rect x="10" y="16" width="2" height="3"/>
+                  <rect x="15" y="16" width="2" height="3"/><rect x="19" y="16" width="2" height="3"/>
+                  <rect x="24" y="16" width="2" height="3"/><rect x="28" y="16" width="2" height="3"/>
+                </g>
+              </svg>
+            </div>
+            <div class="holding-info">
+              <div class="name">Shoreditch Loft</div>
+              <div class="meta">1 share · £100 · 🇬🇧</div>
+            </div>
+            <div class="holding-stat">
+              <div class="val">£108</div>
+              <div class="yield">+£0.48/mo</div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+            Discover
+          </div>
+          <div class="nav-item is-active">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/></svg></div>
+            Portfolio
+          </div>
+          <div class="nav-item">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><path d="M3 17l4-4 4 4 7-7 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            Activity
+          </div>
+          <div class="nav-item">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+            Profile
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">All holdings in one view. <strong>Total value, monthly income, and per-property yield</strong> updated daily from STR revenue.</p>
+    <svg class="arrow" viewBox="0 0 32 24" fill="none"><path d="M2 12h26m-6-7l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 4"/></svg>
+  </div>
+
+  <!-- ====== SCREEN 6 · YIELD ====== -->
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">06</div>
+      <h3>Earn</h3>
+    </div>
+    <div class="phone">
+      <div class="screen">
+        <div class="status-bar">
+          <span>9:45</span>
+          <div class="icons">
+            <svg width="13" height="9" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="2.5" height="4" rx="0.5"/><rect x="3.5" y="6" width="2.5" height="6" rx="0.5"/><rect x="7" y="3" width="2.5" height="9" rx="0.5"/><rect x="10.5" y="0" width="2.5" height="12" rx="0.5"/></svg>
+            <svg width="14" height="9" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="3" width="14" height="6" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="2" y="5" width="9" height="2" fill="currentColor"/></svg>
+          </div>
+        </div>
+        <div class="app-header">
+          <div class="app-title">Activity</div>
+          <div class="icon-btn">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="month-tabs">
+            <span class="month-tab is-active">Mar 2026</span>
+            <span class="month-tab">All-time</span>
+          </div>
+          <div class="payout-card">
+            <div class="lbl">March payout</div>
+            <div class="val">+£2.48</div>
+            <div class="sub">Distributed 1 Apr · From STR revenue</div>
+          </div>
+          <div class="holdings-head">
+            <h4>Per property</h4>
+          </div>
+          <div class="breakdown-row">
+            <div class="breakdown-thumb" style="background: linear-gradient(180deg, #FFE7B8, #FFB547);">
+              <svg viewBox="0 0 26 26" preserveAspectRatio="xMidYMax meet">
+                <path d="M13 26 L13 5 L14.5 3 L16 5 L16 26 Z" fill="#0B2A3B"/>
+                <rect x="12" y="9" width="5" height="17" fill="#0B2A3B"/>
+                <rect x="6" y="11" width="4" height="15" fill="#0B2A3B"/>
+                <rect x="19" y="10" width="4" height="16" fill="#0B2A3B"/>
+              </svg>
+            </div>
+            <div class="breakdown-name">Marina Studio</div>
+            <div class="breakdown-amount">+£1.40</div>
+          </div>
+          <div class="breakdown-row">
+            <div class="breakdown-thumb" style="background: linear-gradient(180deg, #FFD3C2, #FF7A59);">
+              <svg viewBox="0 0 26 26" preserveAspectRatio="xMidYMax meet">
+                <path d="M0 26 L0 16 Q9 12 17 14 Q22 15 26 13 L26 26 Z" fill="#FF7A59" opacity="0.6"/>
+                <rect x="8" y="14" width="10" height="12" fill="#0B2A3B"/>
+                <polygon points="7,14 13,9 19,14" fill="#0B2A3B"/>
+              </svg>
+            </div>
+            <div class="breakdown-name">Surin Villa</div>
+            <div class="breakdown-amount">+£0.60</div>
+          </div>
+          <div class="breakdown-row">
+            <div class="breakdown-thumb" style="background: linear-gradient(180deg, #DCE7FD, #4574F0);">
+              <svg viewBox="0 0 26 26" preserveAspectRatio="xMidYMax meet">
+                <rect x="3" y="9" width="6" height="17" fill="#0B2A3B"/>
+                <polygon points="3,9 6,6 9,9" fill="#0B2A3B"/>
+                <rect x="9" y="9" width="6" height="17" fill="#0B2A3B"/>
+                <polygon points="9,9 12,6 15,9" fill="#0B2A3B"/>
+                <rect x="15" y="9" width="6" height="17" fill="#0B2A3B"/>
+                <polygon points="15,9 18,6 21,9" fill="#0B2A3B"/>
+              </svg>
+            </div>
+            <div class="breakdown-name">Shoreditch Loft</div>
+            <div class="breakdown-amount">+£0.48</div>
+          </div>
+          <div class="yield-actions">
+            <div class="yield-action primary">
+              <span class="icon">↻</span>
+              Auto-reinvest
+            </div>
+            <div class="yield-action">
+              <span class="icon">↗</span>
+              Withdraw
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+            Discover
+          </div>
+          <div class="nav-item">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/></svg></div>
+            Portfolio
+          </div>
+          <div class="nav-item is-active">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><path d="M3 17l4-4 4 4 7-7 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            Activity
+          </div>
+          <div class="nav-item">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+            Profile
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption"><strong>Monthly payouts</strong> from real STR revenue across your holdings. Reinvest automatically or withdraw to bank.</p>
+  </div>
+
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="deck-footer">
+  <p>LIVAROUND ACCESS · <strong>COMING SOON</strong> · SUBJECT TO REGULATORY APPROVAL</p>
+</footer>
+
+</body>
+</html>
