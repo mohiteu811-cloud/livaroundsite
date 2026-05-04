@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LivAround for Owners · Run your portfolio. Own your data.</title>
+<meta name="description" content="The platform owners use to manage assets across multiple superhosts. Real-time staff visibility, AI-augmented operations, multi-channel calendar sync, and the data ownership that unlocks Finance and Access.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --brand-50:  #EEF3FE;
+    --brand-100: #DCE7FD;
+    --brand-300: #88A8F8;
+    --brand-500: #4574F0;
+    --brand-600: #2563EB;
+    --brand-700: #1E4FBF;
+
+    --sun-100: #FFF3DC;
+    --sun-300: #FFD896;
+    --sun-500: #FFB547;
+    --sun-600: #F49A1F;
+    --sun-700: #C97A12;
+
+    --coral-300: #FFAC95;
+    --coral-500: #FF7A59;
+    --coral-600: #E15A3A;
+
+    --ink:       #0B2A3B;
+    --ink-soft:  #1A3F55;
+
+    --slate-50:  #F4F6FA;
+    --slate-100: #E7ECF2;
+    --slate-200: #D7DFE7;
+    --slate-300: #B6C2CD;
+    --slate-400: #8896A4;
+    --slate-500: #5C6E7E;
+    --slate-700: #2F4456;
+
+    --sand:  #FAFBFD;
+    --paper: #FFFFFF;
+    --gold-tint: #FFF8E8;
+
+    --success:    #11A87B;
+    --success-100:#D2F1E5;
+
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --r-pill: 999px;
+    --r-md: 14px;
+    --r-lg: 20px;
+    --r-xl: 28px;
+
+    --shadow-sm: 0 1px 2px rgba(11,42,59,0.06), 0 1px 4px rgba(11,42,59,0.04);
+    --shadow-md: 0 4px 14px rgba(11,42,59,0.08), 0 2px 6px rgba(11,42,59,0.05);
+    --shadow-lg: 0 24px 60px rgba(11,42,59,0.10), 0 8px 20px rgba(11,42,59,0.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: var(--sand);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 { letter-spacing: -0.02em; line-height: 1.1; }
+  h1 { font-size: clamp(40px, 5.2vw, 68px); font-weight: 700; }
+  h2 { font-size: clamp(28px, 3.4vw, 44px); font-weight: 700; letter-spacing: -0.028em; }
+  h3 { font-size: 19px; font-weight: 600; }
+
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 96px 0; }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--brand-700);
+  }
+  .em-blue  { color: var(--brand-600); }
+  .em-sun   { color: var(--sun-700); }
+  .em-coral { color: var(--coral-600); }
+  .em-soft  { color: var(--slate-500); }
+
+  /* ============ NAV ============ */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250,251,253,0.85);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid var(--slate-100);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0; gap: 18px;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 17px; color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-logo {
+    width: 34px; height: 34px;
+    background: var(--ink);
+    border-radius: 8px;
+    display: grid; place-items: center;
+    position: relative;
+  }
+  .nav-logo svg { width: 18px; height: 18px; }
+  .nav-logo::after {
+    content: '';
+    position: absolute; top: 4px; right: 4px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--brand-500);
+    box-shadow: 0 0 0 1.5px var(--ink);
+  }
+  .nav-vertical {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--brand-700);
+    background: var(--brand-50);
+    padding: 5px 10px;
+    border-radius: var(--r-pill);
+    margin-left: 4px;
+  }
+  .nav-vertical-switcher {
+    display: flex; gap: 4px;
+    padding: 3px;
+    background: var(--slate-50);
+    border-radius: var(--r-pill);
+    border: 1px solid var(--slate-100);
+  }
+  .nav-vertical-switcher a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.10em; text-transform: uppercase;
+    padding: 6px 12px; border-radius: var(--r-pill);
+    color: var(--slate-500);
+    text-decoration: none;
+    transition: all 0.18s var(--ease);
+  }
+  .nav-vertical-switcher a:hover { color: var(--ink); }
+  .nav-vertical-switcher a.is-active {
+    background: var(--ink);
+    color: var(--brand-300);
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: 26px;
+  }
+  .nav-links a {
+    color: var(--slate-700);
+    text-decoration: none;
+    font-size: 14px; font-weight: 500;
+    transition: color 0.18s var(--ease);
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px;
+    border-radius: var(--r-pill);
+    font-weight: 600; font-size: 15px;
+    text-decoration: none;
+    cursor: pointer; border: none;
+    transition: all 0.18s var(--ease);
+    font-family: inherit;
+  }
+  .btn--primary { background: var(--ink); color: white; }
+  .btn--primary:hover { background: var(--ink-soft); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .btn--ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--slate-200); }
+  .btn--ghost:hover { border-color: var(--ink); }
+  .btn--blue {
+    background: var(--brand-600); color: white;
+    box-shadow: 0 8px 24px rgba(37,99,235,0.32);
+  }
+  .btn--blue:hover { background: var(--brand-700); transform: translateY(-1px); }
+
+  /* ============ HERO ============ */
+  .hero {
+    position: relative;
+    padding: 64px 0 96px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(37,99,235,0.10), transparent 65%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -150px; left: -150px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,181,71,0.08), transparent 65%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .hero-eyebrow-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 14px;
+    background: var(--brand-50);
+    border: 1px solid var(--brand-100);
+    border-radius: var(--r-pill);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--brand-700);
+    margin-bottom: 28px;
+  }
+  .hero-eyebrow-pill::before { content: '▸'; opacity: 0.7; }
+  .hero h1 { margin-bottom: 22px; }
+  .hero-lede {
+    font-size: 19px;
+    color: var(--slate-700);
+    max-width: 540px;
+    margin-bottom: 40px;
+    line-height: 1.55;
+  }
+  .hero-lede strong { color: var(--ink); font-weight: 600; }
+  .hero-ctas {
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    margin-bottom: 56px;
+  }
+  .hero-meta {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--slate-500);
+    margin-left: 8px;
+  }
+  .hero-meta .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    border-top: 1px solid var(--slate-200);
+    padding-top: 28px;
+    max-width: 600px;
+  }
+  .hero-stat .num {
+    font-size: 28px; font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .hero-stat .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.10em; text-transform: uppercase;
+    color: var(--slate-500);
+    margin-top: 4px;
+  }
+
+  /* ============ HERO ORBIT — Asset at center, three verticals as satellites ============ */
+  .orbit-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 540px;
+    margin-left: auto;
+  }
+  .orbit-stage::before {
+    content: '';
+    position: absolute;
+    inset: 4%;
+    border-radius: 50%;
+    border: 1.5px dashed var(--slate-200);
+    animation: spin 140s linear infinite;
+    opacity: 0.6;
+  }
+  .orbit-ring {
+    position: absolute;
+    inset: 8%;
+    border-radius: 50%;
+    border: 1.5px solid var(--brand-300);
+    opacity: 0.45;
+  }
+  .orbit-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 30%;
+    aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%);
+    background: var(--ink);
+    border-radius: 22px;
+    display: grid; place-items: center;
+    box-shadow: var(--shadow-lg);
+    overflow: visible;
+  }
+  .orbit-center::before {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(69,116,240,0.22);
+  }
+  .orbit-center-icon {
+    width: 38%; height: 38%;
+    color: white;
+    z-index: 2;
+  }
+  .orbit-center-label {
+    position: absolute;
+    bottom: -14px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--brand-600);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: var(--r-pill);
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.28);
+  }
+
+  .satellite {
+    position: absolute;
+    width: 168px;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+  .satellite--ops      { top: 8%;   left: 50%; }
+  .satellite--finance  { top: 71%;  left: 86.4%; }
+  .satellite--access   { top: 71%;  left: 13.6%; }
+
+  .sat-card {
+    background: var(--paper);
+    border-radius: var(--r-md);
+    padding: 12px 14px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(11,42,59,0.05);
+    transition: transform 0.4s var(--ease);
+  }
+  .sat-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .sat-role::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.85;
+  }
+  .satellite--ops     .sat-role { color: var(--brand-700); }
+  .satellite--finance .sat-role { color: var(--sun-700); }
+  .satellite--access  .sat-role { color: var(--coral-600); }
+
+  .sat-headline {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .sat-detail {
+    font-size: 11px;
+    color: var(--slate-500);
+    line-height: 1.4;
+  }
+
+  /* Pulse traveling along the ring */
+  .pulse-track {
+    position: absolute;
+    inset: 8%;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: spin 12s linear infinite;
+    z-index: 2;
+  }
+  .pulse-track .dot {
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%);
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--brand-500);
+    box-shadow:
+      0 0 0 6px rgba(69,116,240,0.20),
+      0 0 0 12px rgba(69,116,240,0.10),
+      0 0 24px rgba(69,116,240,0.7);
+    animation: pulseColor 12s linear infinite;
+  }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes pulseColor {
+    0%,   25%  { background: var(--brand-500); box-shadow: 0 0 0 6px rgba(69,116,240,.20),  0 0 0 12px rgba(69,116,240,.10),  0 0 24px rgba(69,116,240,.7); }
+    33%,  58%  { background: var(--sun-500);   box-shadow: 0 0 0 6px rgba(255,181,71,.20),  0 0 0 12px rgba(255,181,71,.10),  0 0 24px rgba(255,181,71,.7); }
+    66%,  92%  { background: var(--coral-500); box-shadow: 0 0 0 6px rgba(255,122,89,.20),  0 0 0 12px rgba(255,122,89,.10),  0 0 24px rgba(255,122,89,.7); }
+    100%       { background: var(--brand-500); box-shadow: 0 0 0 6px rgba(69,116,240,.20),  0 0 0 12px rgba(69,116,240,.10),  0 0 24px rgba(69,116,240,.7); }
+  }
+  @keyframes satGlow {
+    0%   { transform: scale(1); box-shadow: var(--shadow-md), 0 0 0 0 var(--sat-glow, transparent); }
+    8%   { transform: scale(1.05); box-shadow: var(--shadow-md), 0 0 0 8px var(--sat-glow, transparent); }
+    20%  { transform: scale(1.05); box-shadow: var(--shadow-md), 0 0 0 6px var(--sat-glow, transparent); }
+    35%  { transform: scale(1); box-shadow: var(--shadow-md), 0 0 0 0 transparent; }
+    100% { transform: scale(1); box-shadow: var(--shadow-md), 0 0 0 0 transparent; }
+  }
+  .satellite--ops     .sat-card { --sat-glow: rgba(69,116,240, 0.32);  animation: satGlow 12s var(--ease) infinite; animation-delay: 0s; }
+  .satellite--finance .sat-card { --sat-glow: rgba(255,181,71, 0.32);  animation: satGlow 12s var(--ease) infinite; animation-delay: 4s; }
+  .satellite--access  .sat-card { --sat-glow: rgba(255,122,89, 0.32);  animation: satGlow 12s var(--ease) infinite; animation-delay: 8s; }
+
+  /* ============ THE 3 PROBLEM PANELS ============ */
+  .problems {
+    background: var(--paper);
+    padding: 96px 0;
+    border-top: 1px solid var(--slate-100);
+  }
+  .problems-head {
+    max-width: 800px;
+    margin-bottom: 60px;
+  }
+  .problems-head h2 { margin-bottom: 18px; }
+  .problems-head p {
+    color: var(--slate-700);
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 640px;
+  }
+  .problem-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 100px;
+    padding-bottom: 100px;
+    border-bottom: 1px solid var(--slate-100);
+  }
+  .problem-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: 0; }
+  .problem-row:nth-child(even) .problem-copy { order: 2; }
+  .problem-row:nth-child(even) .problem-visual { order: 1; }
+  .problem-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--brand-700);
+    margin-bottom: 14px;
+  }
+  .problem-row h3 {
+    font-size: clamp(24px, 2.5vw, 32px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .problem-pain {
+    font-size: 15px;
+    color: var(--slate-500);
+    line-height: 1.55;
+    font-style: italic;
+    margin-bottom: 22px;
+    padding-left: 16px;
+    border-left: 2px solid var(--slate-200);
+  }
+  .problem-solution {
+    font-size: 15px;
+    color: var(--slate-700);
+    line-height: 1.6;
+    margin-bottom: 22px;
+  }
+  .problem-solution strong { color: var(--ink); font-weight: 600; }
+  .problem-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .problem-bullets li {
+    position: relative;
+    padding-left: 24px;
+    font-size: 13px;
+    color: var(--slate-700);
+    line-height: 1.55;
+  }
+  .problem-bullets li::before {
+    content: '';
+    position: absolute;
+    top: 4px; left: 0;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--brand-50);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><path d='M3 7.5l2.8 2.8L11 4.5' stroke='%232563EB' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  }
+  .problem-bullets strong { color: var(--ink); font-weight: 600; }
+
+  /* Problem visuals — proof-style cards */
+  .problem-visual {
+    position: relative;
+  }
+
+  /* Visual #1 — Multi-host dashboard */
+  .visual-1 {
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-xl);
+    padding: 22px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+  }
+  .visual-1::before {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, rgba(37,99,235,0.10), transparent 65%);
+    pointer-events: none;
+  }
+  .visual-1-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .visual-1-head .ttl {
+    font-size: 13px; font-weight: 700; color: var(--ink);
+  }
+  .visual-1-head .live-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--success-100);
+    color: var(--success);
+    padding: 3px 8px;
+    border-radius: var(--r-pill);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  .visual-1-head .live-pill .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+    animation: pulseSimple 1.6s var(--ease) infinite;
+  }
+  @keyframes pulseSimple { 0%,100% {opacity:1} 50% {opacity:0.5} }
+
+  .property-strip {
+    display: flex; gap: 12px; align-items: center;
+    padding: 12px;
+    background: var(--slate-50);
+    border-radius: var(--r-md);
+    margin-bottom: 8px;
+  }
+  .property-strip-thumb {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    display: grid; place-items: center;
+  }
+  .property-strip:nth-child(1) .property-strip-thumb { background: linear-gradient(135deg, #FFD896, #FFB547); }
+  .property-strip:nth-child(2) .property-strip-thumb { background: linear-gradient(135deg, #FFAC95, #FF7A59); }
+  .property-strip:nth-child(3) .property-strip-thumb { background: linear-gradient(135deg, #88A8F8, #4574F0); }
+  .property-strip-thumb svg { width: 18px; height: 18px; color: var(--ink); }
+  .property-strip-info { flex: 1; min-width: 0; }
+  .property-strip-info .name { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .property-strip-info .meta {
+    font-size: 11px;
+    color: var(--slate-500);
+    display: flex; align-items: center; gap: 6px;
+    margin-top: 1px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .property-strip-info .meta .sep { opacity: 0.4; }
+  .property-strip-status {
+    text-align: right;
+  }
+  .property-strip-status .val {
+    font-size: 13px; font-weight: 700; color: var(--ink);
+  }
+  .property-strip-status .sub {
+    font-size: 10px; color: var(--slate-500);
+    margin-top: 1px;
+  }
+  .property-strip-status .sub.green { color: var(--success); }
+
+  .visual-1-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--slate-100);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+  .visual-1-foot .lbl { color: var(--slate-500); }
+  .visual-1-foot .val { color: var(--ink); font-weight: 700; }
+
+  /* Visual #2 — Unified revenue chart */
+  .visual-2 {
+    background: var(--ink);
+    color: white;
+    border-radius: var(--r-xl);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .visual-2::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 240px; height: 240px;
+    background: radial-gradient(circle, rgba(255,181,71,0.20), transparent 65%);
+  }
+  .visual-2-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .visual-2-head .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,216,150,0.8);
+    margin-bottom: 4px;
+  }
+  .visual-2-head .val {
+    font-size: 32px; font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+  .visual-2-head .change {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(17,168,123,0.18);
+    color: #4FCF99;
+    padding: 4px 10px;
+    border-radius: var(--r-pill);
+    font-size: 11px; font-weight: 700;
+    margin-top: 8px;
+  }
+  .visual-2-head .period {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    text-align: right;
+    margin-top: 4px;
+  }
+  .channel-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 12px;
+    position: relative;
+  }
+  .channel-row:last-child { border-bottom: 0; }
+  .channel-row .name {
+    width: 80px;
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+  }
+  .channel-row .bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.05);
+    border-radius: var(--r-pill);
+    overflow: hidden;
+    position: relative;
+  }
+  .channel-row .bar-fill {
+    height: 100%;
+    border-radius: var(--r-pill);
+  }
+  .channel-row.airbnb     .bar-fill { background: linear-gradient(90deg, var(--coral-500), var(--coral-600)); width: 64%; }
+  .channel-row.booking    .bar-fill { background: linear-gradient(90deg, var(--brand-500), var(--brand-600)); width: 22%; }
+  .channel-row.vrbo       .bar-fill { background: linear-gradient(90deg, var(--sun-500), var(--sun-600)); width: 14%; }
+  .channel-row .amt {
+    width: 70px;
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: white;
+  }
+
+  /* Visual #3 — Data ownership / audit log */
+  .visual-3 {
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-xl);
+    padding: 22px;
+    box-shadow: var(--shadow-md);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .visual-3-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--slate-100);
+  }
+  .visual-3-head .ttl {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .visual-3-head .meta {
+    font-size: 10px; color: var(--slate-500);
+  }
+  .audit-row {
+    display: grid;
+    grid-template-columns: 50px 1fr auto;
+    gap: 12px; align-items: baseline;
+    padding: 8px 0;
+    font-size: 11px;
+    border-bottom: 1px dashed var(--slate-100);
+  }
+  .audit-row:last-child { border-bottom: 0; }
+  .audit-row .time { color: var(--slate-500); }
+  .audit-row .event { color: var(--ink); }
+  .audit-row .event .tag {
+    display: inline-block;
+    background: var(--brand-50);
+    color: var(--brand-700);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 9px;
+    margin-right: 4px;
+    letter-spacing: 0.04em;
+  }
+  .audit-row .event .tag.coral { background: #FFEDE5; color: var(--coral-600); }
+  .audit-row .event .tag.sun { background: var(--gold-tint); color: var(--sun-700); }
+  .audit-row .event .tag.green { background: var(--success-100); color: var(--success); }
+  .audit-row .actor { color: var(--slate-500); font-size: 10px; }
+
+  .visual-3-foot {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--slate-100);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .visual-3-foot .export-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--ink);
+    color: white;
+    padding: 7px 12px;
+    border-radius: var(--r-pill);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .visual-3-foot .stats {
+    color: var(--slate-500);
+    font-size: 10px;
+  }
+
+  /* ============ THE LOOP REVEAL ============ */
+  .loop-reveal {
+    background: var(--ink);
+    color: white;
+    padding: 96px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .loop-reveal::before {
+    content: '';
+    position: absolute;
+    top: -200px; left: 50%;
+    width: 800px; height: 800px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(69,116,240,0.16), rgba(255,181,71,0.06) 35%, transparent 60%);
+    pointer-events: none;
+  }
+  .loop-reveal-inner {
+    position: relative;
+    text-align: left;
+  }
+  .loop-reveal .eyebrow {
+    color: var(--brand-300);
+    margin-bottom: 16px;
+  }
+  .loop-reveal h2 {
+    color: white;
+    margin-bottom: 22px;
+    max-width: 760px;
+  }
+  .loop-reveal h2 .em-blue { color: var(--brand-300); }
+  .loop-reveal h2 .em-sun { color: var(--sun-500); }
+  .loop-reveal h2 .em-coral { color: var(--coral-500); }
+  .loop-reveal-lede {
+    font-size: 17px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.55;
+    max-width: 640px;
+    margin-bottom: 50px;
+  }
+  .loop-reveal-lede strong { color: white; font-weight: 600; }
+
+  .flow-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 18px;
+    align-items: stretch;
+    margin-bottom: 28px;
+  }
+  .flow-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--r-lg);
+    padding: 24px;
+    backdrop-filter: blur(8px);
+    transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+  }
+  .flow-card:hover {
+    transform: translateY(-3px);
+  }
+  .flow-card.ops:hover     { border-color: var(--brand-500); }
+  .flow-card.finance:hover { border-color: var(--sun-500); }
+  .flow-card.access:hover  { border-color: var(--coral-500); }
+
+  .flow-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .flow-card.ops     .flow-num { color: var(--brand-300); }
+  .flow-card.finance .flow-num { color: var(--sun-300); }
+  .flow-card.access  .flow-num { color: var(--coral-300); }
+
+  .flow-card h3 {
+    font-size: 18px;
+    color: white;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .flow-card .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .flow-card p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.55;
+  }
+  .flow-card .data-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(255,255,255,0.06);
+    padding: 4px 10px;
+    border-radius: var(--r-pill);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    margin-top: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .flow-card.ops     .data-pill { color: var(--brand-300); }
+  .flow-card.finance .data-pill { color: var(--sun-300); }
+  .flow-card.access  .data-pill { color: var(--coral-300); }
+
+  .flow-arrow {
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.3);
+    padding: 0 4px;
+  }
+  .flow-arrow svg {
+    width: 24px; height: 24px;
+  }
+
+  .loop-reveal-foot {
+    display: flex; align-items: center; gap: 12px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    flex-wrap: wrap;
+  }
+  .loop-reveal-foot .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ============ FEATURES (owner toolkit) ============ */
+  .toolkit {
+    background: var(--sand);
+    padding: 96px 0;
+  }
+  .toolkit-head { max-width: 760px; margin-bottom: 56px; }
+  .toolkit-head h2 { margin-bottom: 18px; }
+  .toolkit-head p { color: var(--slate-700); font-size: 16px; line-height: 1.55; max-width: 600px; }
+  .toolkit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .toolkit-card {
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-lg);
+    padding: 26px 24px 24px;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+  .toolkit-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+  .toolkit-icon {
+    width: 38px; height: 38px;
+    background: var(--brand-50);
+    border-radius: 10px;
+    display: grid; place-items: center;
+    color: var(--brand-600);
+    margin-bottom: 16px;
+  }
+  .toolkit-icon svg { width: 20px; height: 20px; }
+  .toolkit-card h3 { font-size: 16px; margin-bottom: 6px; }
+  .toolkit-card p {
+    font-size: 13px;
+    color: var(--slate-700);
+    line-height: 1.55;
+  }
+
+  /* ============ HOW IT WORKS (3-step onboarding) ============ */
+  .how {
+    background: var(--paper);
+    padding: 96px 0;
+    border-top: 1px solid var(--slate-100);
+    position: relative;
+    overflow: hidden;
+  }
+  .how::before {
+    content: '';
+    position: absolute;
+    top: -150px; right: -150px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(37,99,235,0.06), transparent 65%);
+    pointer-events: none;
+  }
+  .how-head { max-width: 760px; margin-bottom: 56px; position: relative; }
+  .how-head h2 { margin-bottom: 18px; }
+  .how-head p { color: var(--slate-700); font-size: 16px; line-height: 1.55; max-width: 620px; }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    position: relative;
+  }
+  .how-step {
+    background: var(--paper);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-xl);
+    padding: 28px 26px 26px;
+    display: flex; flex-direction: column;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+  .how-step:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+  .how-step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--brand-700);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .how-step h3 {
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.018em;
+    margin-bottom: 8px;
+  }
+  .how-step p {
+    font-size: 13px;
+    color: var(--slate-700);
+    line-height: 1.55;
+    margin-bottom: 18px;
+  }
+  .how-step .timing {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--slate-500);
+    background: var(--slate-50);
+    padding: 5px 10px;
+    border-radius: var(--r-pill);
+    align-self: flex-start;
+  }
+  .how-step .timing::before { content: '⏱'; opacity: 0.7; }
+
+  /* Inline mini-mockups inside each step card */
+  .how-mockup {
+    margin-top: auto;
+    margin-bottom: 18px;
+    background: var(--slate-50);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--r-md);
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--slate-700);
+    line-height: 1.5;
+  }
+  .how-mockup .field {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 4px 0;
+  }
+  .how-mockup .field + .field { border-top: 1px dashed var(--slate-200); }
+  .how-mockup .field .lbl { color: var(--slate-500); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .how-mockup .field .val { color: var(--ink); font-weight: 700; }
+  .how-mockup .field .val.coral { color: var(--coral-600); }
+  .how-mockup .field .val.success { color: var(--success); }
+
+  /* CTA chip at the bottom of the section */
+  .how-cta-chip {
+    margin-top: 36px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--slate-500);
+    letter-spacing: 0.04em;
+    position: relative;
+  }
+  .how-cta-chip strong { color: var(--ink); font-weight: 700; }
+
+  /* ============ PERSONA QUOTE ============ */
+  .persona {
+    background: var(--paper);
+    padding: 96px 0;
+    border-top: 1px solid var(--slate-100);
+  }
+  .persona-card {
+    max-width: 880px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, var(--brand-50), var(--paper) 60%);
+    border: 1px solid var(--brand-100);
+    border-radius: var(--r-xl);
+    padding: 40px 44px;
+    position: relative;
+  }
+  .persona-card::before {
+    content: '"';
+    position: absolute;
+    top: -10px; left: 30px;
+    font-size: 100px;
+    line-height: 1;
+    font-family: serif;
+    color: var(--brand-300);
+    opacity: 0.4;
+  }
+  .persona-quote {
+    font-size: 22px;
+    line-height: 1.45;
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: -0.012em;
+    margin-bottom: 20px;
+  }
+  .persona-quote em { color: var(--brand-700); font-style: normal; font-weight: 600; }
+  .persona-attrib {
+    display: flex; align-items: center; gap: 14px;
+    padding-top: 20px;
+    border-top: 1px solid var(--brand-100);
+  }
+  .persona-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+    display: grid; place-items: center;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .persona-attrib-text .name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .persona-attrib-text .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--slate-500);
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  /* ============ CTA ============ */
+  .cta-band {
+    background: var(--ink);
+    padding: 80px 0;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-band::before {
+    content: '';
+    position: absolute;
+    top: -40%; right: -20%;
+    width: 80%; height: 180%;
+    background: radial-gradient(circle, rgba(69,116,240,0.14), transparent 60%);
+  }
+  .cta-inner {
+    position: relative;
+    max-width: 760px;
+  }
+  .cta-band h2 { margin-bottom: 16px; color: white; }
+  .cta-band h2 .em-blue { color: var(--brand-300); }
+  .cta-band p {
+    color: rgba(255,255,255,0.7);
+    font-size: 16px;
+    line-height: 1.55;
+    margin-bottom: 28px;
+    max-width: 560px;
+  }
+  .cta-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .cta-band .btn--primary { background: var(--brand-500); color: white; }
+  .cta-band .btn--primary:hover { background: var(--brand-600); }
+  .cta-band .btn--ghost {
+    background: transparent;
+    color: white;
+    border-color: rgba(255,255,255,0.2);
+  }
+  .cta-band .btn--ghost:hover { border-color: white; }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.55);
+    padding: 60px 0 40px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 13px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  .footer-brand-block { display: flex; flex-direction: column; gap: 14px; max-width: 320px; }
+  .footer-tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand-300);
+  }
+  .footer-desc {
+    color: rgba(255,255,255,0.5);
+    line-height: 1.55;
+  }
+  .footer-col h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+  .footer-col a {
+    display: block;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    margin-bottom: 8px;
+    font-size: 13px;
+    transition: color 0.18s var(--ease);
+  }
+  .footer-col a:hover { color: var(--brand-300); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 24px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.06em;
+  }
+
+  /* ============ FADE ============ */
+  .fade {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  }
+  .fade.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 980px) {
+    .nav-links { display: none; }
+    .nav-vertical-switcher { display: none; }
+    .hero-grid { grid-template-columns: 1fr; gap: 80px; }
+    .orbit-stage { max-width: 440px; margin: 0 auto; }
+    .problem-row { grid-template-columns: 1fr; gap: 40px; padding-bottom: 60px; margin-bottom: 60px; }
+    .problem-row:nth-child(even) .problem-copy { order: 1; }
+    .problem-row:nth-child(even) .problem-visual { order: 2; }
+    .toolkit-grid { grid-template-columns: 1fr 1fr; }
+    .how-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .flow-grid { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); padding: 4px 0; }
+  }
+  @media (max-width: 720px) {
+    .section, .problems, .loop-reveal, .toolkit, .persona, .how { padding: 64px 0; }
+    .hero-stats { grid-template-columns: 1fr 1fr; gap: 24px 12px; }
+    .toolkit-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+    .satellite { width: 132px; }
+    .persona-card { padding: 32px 24px; }
+    .persona-quote { font-size: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pulse-track, .orbit-stage::before, .satellite .sat-card { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="/" class="nav-brand">
+      <span class="nav-logo">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M3 11L12 4L21 11V20H14V14H10V20H3V11Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      livaround
+      <span class="nav-vertical">For Owners</span>
+    </a>
+    <div class="nav-vertical-switcher">
+      <a href="/">Operations</a>
+      <a href="/finance">Finance</a>
+      <a href="/access">Access</a>
+    </div>
+    <div class="nav-links">
+      <a href="#problems">Why owners</a>
+      <a href="#loop-reveal">The compounding loop</a>
+      <a href="#toolkit">Owner toolkit</a>
+      <a href="#how">How it works</a>
+      <a href="#cta" class="btn btn--blue" style="padding:9px 18px;font-size:14px">Get owner access</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="hero-eyebrow-pill">For property owners</span>
+      <h1 class="fade is-visible">
+        Own the asset.<br>
+        Now own the<br>
+        <span class="em-blue">data.</span>
+      </h1>
+      <p class="hero-lede fade is-visible" style="transition-delay:0.1s">
+        If you own properties run by superhosts, you've been flying half-blind — staff
+        you can't see, calendars across three platforms you piece together in spreadsheets,
+        and revenue data trapped in someone else's account. <strong>LivAround changes the
+        equation: owner-side visibility, owner-side data, and a platform that
+        compounds.</strong>
+      </p>
+      <div class="hero-ctas fade is-visible" style="transition-delay:0.18s">
+        <a href="#cta" class="btn btn--primary">
+          Get owner access
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3.5 8h9m-3.5-3.5L12.5 8 9 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#loop-reveal" class="btn btn--ghost">See the compounding loop</a>
+        <span class="hero-meta">
+          <span class="dot"></span>
+          90-day free trial · $10/property/mo
+        </span>
+      </div>
+      <div class="hero-stats fade is-visible" style="transition-delay:0.26s">
+        <div class="hero-stat"><div class="num">3</div><div class="lbl">Verticals · one loop</div></div>
+        <div class="hero-stat"><div class="num">∞</div><div class="lbl">Hosts per owner</div></div>
+        <div class="hero-stat"><div class="num">100<span style="font-size:.55em;opacity:.6">%</span></div><div class="lbl">Data ownership</div></div>
+        <div class="hero-stat"><div class="num">90<span style="font-size:.55em;opacity:.6">d</span></div><div class="lbl">Free trial</div></div>
+      </div>
+    </div>
+
+    <!-- Hero orbit · Asset at center, three verticals as satellites -->
+    <div class="orbit-stage fade is-visible" style="transition-delay:0.12s" aria-label="Your asset at center, with operations, finance, and access verticals orbiting around it">
+      <div class="orbit-ring"></div>
+
+      <!-- Center asset tile -->
+      <div class="orbit-center">
+        <svg class="orbit-center-icon" viewBox="0 0 32 32" fill="none">
+          <path d="M4 14L16 4L28 14V27H20V18H12V27H4V14Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="22" r="1.5" fill="currentColor"/>
+        </svg>
+        <span class="orbit-center-label">Your Asset</span>
+      </div>
+
+      <!-- Pulse traveling along the ring -->
+      <div class="pulse-track">
+        <span class="dot"></span>
+      </div>
+
+      <!-- Operations satellite (top, brand-blue) -->
+      <div class="satellite satellite--ops">
+        <div class="sat-card">
+          <div class="sat-role">Operations</div>
+          <div class="sat-headline">Run the asset</div>
+          <div class="sat-detail">Multi-host visibility · staff dispatch · channel sync</div>
+        </div>
+      </div>
+
+      <!-- Finance satellite (bottom-right, sun) -->
+      <div class="satellite satellite--finance">
+        <div class="sat-card">
+          <div class="sat-role">Finance</div>
+          <div class="sat-headline">Borrow against yield</div>
+          <div class="sat-detail">Yield-backed liquidity · up to 70% LTV</div>
+        </div>
+      </div>
+
+      <!-- Access satellite (bottom-left, coral) -->
+      <div class="satellite satellite--access">
+        <div class="sat-card">
+          <div class="sat-role">Access</div>
+          <div class="sat-headline">Sell fractions</div>
+          <div class="sat-detail">Fractional shares · keep operating control</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE THREE PROBLEM PANELS ============ -->
+<section class="problems" id="problems">
+  <div class="container">
+    <div class="problems-head fade">
+      <div class="eyebrow" style="margin-bottom:12px">▸ Why owners need their own platform</div>
+      <h2>The three things every<br>multi-property owner is missing.</h2>
+      <p>Superhosts run great listings. But they don't run them <em style="font-style:italic">for you</em> — they run them for guests. There's a gap between the asset and the operator that no platform has filled. We did.</p>
+    </div>
+
+    <!-- PROBLEM 1 — Control / visibility -->
+    <div class="problem-row">
+      <div class="problem-copy fade">
+        <div class="problem-num">01 · The control problem</div>
+        <h3>You own the asset. Your superhost runs it. <span class="em-soft">You see — nothing.</span></h3>
+        <p class="problem-pain">"Did the AC technician show up? Are the cleaners actually using the supplies I'm paying for? Why was there a 4-day gap between bookings?"</p>
+        <p class="problem-solution">
+          LivAround gives owners a <strong>read-only operations layer</strong> on top of every
+          superhost arrangement. You see staff GPS, work-order status, supply consumption, and
+          guest issues — without overriding the host's authority to actually run the property.
+        </p>
+        <ul class="problem-bullets">
+          <li><strong>Live staff visibility.</strong> Every cleaner, technician, and host action timestamped.</li>
+          <li><strong>Multi-host management.</strong> Different superhosts on different properties, all in one place.</li>
+          <li><strong>Audit trail of everything.</strong> Who did what, when, with photo proof.</li>
+        </ul>
+      </div>
+      <div class="problem-visual fade">
+        <div class="visual-1">
+          <div class="visual-1-head">
+            <span class="ttl">Your portfolio · Live</span>
+            <span class="live-pill"><span class="dot"></span>Live</span>
+          </div>
+          <div class="property-strip">
+            <div class="property-strip-thumb">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M3 11L12 4L21 11V20H14V14H10V20H3V11Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="property-strip-info">
+              <div class="name">Villa Mo · Goa</div>
+              <div class="meta">Host: Arjun P. <span class="sep">·</span> 5 nights booked</div>
+            </div>
+            <div class="property-strip-status">
+              <div class="val">£14.3k</div>
+              <div class="sub green">+ cleaner on-site</div>
+            </div>
+          </div>
+          <div class="property-strip">
+            <div class="property-strip-thumb">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M3 11L12 4L21 11V20H14V14H10V20H3V11Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="property-strip-info">
+              <div class="name">Marina Studio · Dubai</div>
+              <div class="meta">Host: Layla K. <span class="sep">·</span> 12 nights booked</div>
+            </div>
+            <div class="property-strip-status">
+              <div class="val">£9.8k</div>
+              <div class="sub green">AC repair complete</div>
+            </div>
+          </div>
+          <div class="property-strip">
+            <div class="property-strip-thumb">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M3 11L12 4L21 11V20H14V14H10V20H3V11Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="property-strip-info">
+              <div class="name">Pool Villa · Phuket</div>
+              <div class="meta">Host: Niran T. <span class="sep">·</span> Between guests</div>
+            </div>
+            <div class="property-strip-status">
+              <div class="val">£6.4k</div>
+              <div class="sub">Awaiting check-in 2pm</div>
+            </div>
+          </div>
+          <div class="visual-1-foot">
+            <span class="lbl">3 PROPERTIES · 3 HOSTS</span>
+            <span class="val">ALL IN SYNC</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROBLEM 2 — Yield / revenue picture -->
+    <div class="problem-row">
+      <div class="problem-copy fade">
+        <div class="problem-num">02 · The yield problem</div>
+        <h3>Three calendars. Three pricing engines. <span class="em-soft">One revenue picture you piece together in spreadsheets.</span></h3>
+        <p class="problem-pain">"My superhost says we did £14k last month. The Airbnb dashboard says £8k. Booking.com says £4.2k. Vrbo says £1.6k. Where's the truth?"</p>
+        <p class="problem-solution">
+          LivAround pulls live data from every channel your superhost lists on, normalizes it,
+          and gives you a <strong>single owner-side revenue dashboard</strong>. Verified gross,
+          net of fees, occupancy, and ADR — across every property and every host you work with.
+        </p>
+        <ul class="problem-bullets">
+          <li><strong>Multi-channel sync.</strong> Airbnb + Booking.com + Vrbo + direct, in one feed.</li>
+          <li><strong>AI embedded in operations.</strong> Pricing recommendations, anomaly detection, occupancy forecasts.</li>
+          <li><strong>Owner-side reconciliation.</strong> Catch discrepancies between what your host reports and what platforms paid out.</li>
+        </ul>
+      </div>
+      <div class="problem-visual fade">
+        <div class="visual-2">
+          <div class="visual-2-head">
+            <div>
+              <div class="lbl">Verified gross · March 2026</div>
+              <div class="val">£14,308</div>
+              <div class="change">▲ 12.4% vs Feb</div>
+            </div>
+            <div class="period">VILLA MO · GOA<br>3 CHANNELS</div>
+          </div>
+          <div class="channel-row airbnb">
+            <span class="name">Airbnb</span>
+            <span class="bar"><span class="bar-fill"></span></span>
+            <span class="amt">£9,158</span>
+          </div>
+          <div class="channel-row booking">
+            <span class="name">Booking.com</span>
+            <span class="bar"><span class="bar-fill"></span></span>
+            <span class="amt">£3,148</span>
+          </div>
+          <div class="channel-row vrbo">
+            <span class="name">Vrbo</span>
+            <span class="bar"><span class="bar-fill"></span></span>
+            <span class="amt">£2,002</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROBLEM 3 — Data ownership -->
+    <div class="problem-row">
+      <div class="problem-copy fade">
+        <div class="problem-num">03 · The data problem</div>
+        <h3>Your operating data is trapped <span class="em-soft">in your superhost's account.</span></h3>
+        <p class="problem-pain">"What happens when I switch superhosts? When I want to refinance the property? When my heirs need to value the asset? My data is gone."</p>
+        <p class="problem-solution">
+          LivAround treats every piece of operating data — bookings, revenue, expenses,
+          maintenance — as <strong>your property, not your superhost's</strong>. Exportable,
+          portable, owner-stamped. And cryptographically auditable, so it stands up to a
+          lender's diligence.
+        </p>
+        <ul class="problem-bullets">
+          <li><strong>Owner-stamped audit log.</strong> Every event signed and timestamped.</li>
+          <li><strong>Exportable on demand.</strong> CSV, JSON, PDF — for accountants, lenders, or your own records.</li>
+          <li><strong>Portable across hosts.</strong> Switch superhosts without losing 5 years of operating history.</li>
+        </ul>
+      </div>
+      <div class="problem-visual fade">
+        <div class="visual-3">
+          <div class="visual-3-head">
+            <span class="ttl">▸ Owner audit log</span>
+            <span class="meta">Last 24h</span>
+          </div>
+          <div class="audit-row">
+            <span class="time">14:42</span>
+            <span class="event"><span class="tag">booking</span>5-night reservation · Tom F. · £1,420</span>
+            <span class="actor">@host</span>
+          </div>
+          <div class="audit-row">
+            <span class="time">12:18</span>
+            <span class="event"><span class="tag green">revenue</span>Airbnb payout received · £842</span>
+            <span class="actor">system</span>
+          </div>
+          <div class="audit-row">
+            <span class="time">09:55</span>
+            <span class="event"><span class="tag coral">repair</span>AC unit serviced · £45 expense</span>
+            <span class="actor">@staff</span>
+          </div>
+          <div class="audit-row">
+            <span class="time">08:30</span>
+            <span class="event"><span class="tag sun">cleaning</span>Turnover complete · 22 min on-site</span>
+            <span class="actor">@staff</span>
+          </div>
+          <div class="audit-row">
+            <span class="time">07:10</span>
+            <span class="event"><span class="tag">checkout</span>Guest departed · 5★ rating</span>
+            <span class="actor">@host</span>
+          </div>
+          <div class="visual-3-foot">
+            <a href="#" class="export-btn">
+              <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 1v10m-4-4l4 4 4-4M2 14h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Export
+            </a>
+            <span class="stats">Signed · 1,247 events this month</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ THE LOOP REVEAL ============ -->
+<section class="loop-reveal" id="loop-reveal">
+  <div class="container loop-reveal-inner">
+    <div class="eyebrow fade">▸ The second loop · Where it compounds</div>
+    <h2 class="fade" style="transition-delay:0.06s">
+      Your <span class="em-blue">operating data</span><br>
+      becomes <span class="em-sun">credit</span>.<br>
+      Then <span class="em-coral">capital.</span>
+    </h2>
+    <p class="loop-reveal-lede fade" style="transition-delay:0.12s">
+      The horizon's first loop is daily — guests, hosts, staff, repeat. The second loop is
+      structural, and only LivAround has it: <strong>data you generate in Operations
+      compounds into Finance, then into Access.</strong> One platform. Three verticals.
+      Each one makes the next more valuable.
+    </p>
+
+    <div class="flow-grid">
+      <div class="flow-card ops fade">
+        <div class="flow-num">01 · Run</div>
+        <h3>Operations</h3>
+        <div class="role">Daily operating data</div>
+        <p>STR revenue, occupancy, ADR, staff dispatch, maintenance log — all owner-stamped, all verifiable.</p>
+        <span class="data-pill">▸ Signed yield data</span>
+      </div>
+      <div class="flow-arrow fade" style="transition-delay:0.05s">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h18m-6-6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="flow-card finance fade" style="transition-delay:0.10s">
+        <div class="flow-num">02 · Borrow</div>
+        <h3>Finance</h3>
+        <div class="role">Yield-backed liquidity</div>
+        <p>That same operating data underwrites a loan against your property's yield. Up to 70% LTV. Rates from 4.9% with a shared appreciation kicker.</p>
+        <span class="data-pill">▸ Underwritten directly</span>
+      </div>
+      <div class="flow-arrow fade" style="transition-delay:0.15s">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h18m-6-6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="flow-card access fade" style="transition-delay:0.20s">
+        <div class="flow-num">03 · Sell</div>
+        <h3>Access</h3>
+        <div class="role">Fractional capital</div>
+        <p>Or sell fractional shares to retail investors. £100 minimum buy-in. You retain operating control while raising capital from your asset's verified yield.</p>
+        <span class="data-pill">▸ Fractionalized</span>
+      </div>
+    </div>
+
+    <div class="loop-reveal-foot fade" style="transition-delay:0.26s">
+      <span class="label">▸ Pick one. Or stack all three. The loop closes either way.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOOLKIT ============ -->
+<section class="toolkit" id="toolkit">
+  <div class="container">
+    <div class="toolkit-head fade">
+      <div class="eyebrow" style="margin-bottom:12px">▸ The owner toolkit</div>
+      <h2>Everything you need.<br><span class="em-soft">Nothing you don't.</span></h2>
+      <p>Owners aren't hosts. You don't need a messaging inbox or a calendar editor. You need visibility, verification, and exit options. That's what we built.</p>
+    </div>
+
+    <div class="toolkit-grid">
+      <div class="toolkit-card fade">
+        <div class="toolkit-icon">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <h3>Real-time staff visibility</h3>
+        <p>See every cleaner, technician, and host action across your portfolio — GPS-stamped, photo-verified, owner-readable.</p>
+      </div>
+      <div class="toolkit-card fade" style="transition-delay:0.04s">
+        <div class="toolkit-icon">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <h3>Multi-host portfolio view</h3>
+        <p>One dashboard for properties run by different superhosts. Different operators, unified visibility.</p>
+      </div>
+      <div class="toolkit-card fade" style="transition-delay:0.08s">
+        <div class="toolkit-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h4l3-9 4 18 3-9h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>AI-augmented operations</h3>
+        <p>Pricing anomalies, occupancy forecasts, and revenue discrepancies flagged automatically — without you babysitting.</p>
+      </div>
+      <div class="toolkit-card fade" style="transition-delay:0.12s">
+        <div class="toolkit-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H5l-4 4V5a2 2 0 012-2h16a2 2 0 012 2v10z" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <h3>Multi-channel calendar sync</h3>
+        <p>Airbnb, Booking.com, Vrbo — all reconciled. Catch double-bookings before they happen. Catch missed payouts after they don't.</p>
+      </div>
+      <div class="toolkit-card fade" style="transition-delay:0.16s">
+        <div class="toolkit-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2v6m0 8v6M2 12h6m8 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <h3>Owner-stamped audit log</h3>
+        <p>Every booking, payout, expense, and repair — cryptographically signed, exportable, lender-grade.</p>
+      </div>
+      <div class="toolkit-card fade" style="transition-delay:0.20s">
+        <div class="toolkit-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6M9 13h6m-6 4h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3>One-click exports</h3>
+        <p>For accountants, lenders, tax filings, or due-diligence. CSV, JSON, PDF — generated on demand.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS — onboarding flow ============ -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="how-head fade">
+      <div class="eyebrow" style="margin-bottom:12px">▸ How onboarding works</div>
+      <h2>From signup to first P&amp;L. <span class="em-soft">In ten minutes.</span></h2>
+      <p>The first useful output isn't the dashboard — it's the moment your historical Airbnb earnings appear, reconciled against payouts, with discrepancies flagged. That happens in the first session.</p>
+    </div>
+
+    <div class="how-grid">
+      <!-- Step 1 -->
+      <div class="how-step fade">
+        <div class="how-step-num">01 · Add property</div>
+        <h3>Tell us what you own.</h3>
+        <p>Address, market, estimated value, and who runs it (you or a superhost). Two minutes per property — bulk uploads if you've got a portfolio.</p>
+        <div class="how-mockup">
+          <div class="field"><span class="lbl">Property</span><span class="val">Villa Mo · Goa</span></div>
+          <div class="field"><span class="lbl">Estimated value</span><span class="val">$340,000</span></div>
+          <div class="field"><span class="lbl">Run by</span><span class="val">Arjun P. (superhost)</span></div>
+        </div>
+        <span class="timing">2 min</span>
+      </div>
+
+      <!-- Step 2 — the killer step -->
+      <div class="how-step fade" style="transition-delay:0.06s">
+        <div class="how-step-num">02 · Import history</div>
+        <h3>Upload your Airbnb earnings CSV.</h3>
+        <p>Drop in 12, 24, 36 months of Airbnb history. We parse, dedupe, and reconcile against payouts. Discrepancies are flagged automatically — missing payouts, mismatched amounts, unexpected gaps.</p>
+        <div class="how-mockup">
+          <div class="field"><span class="lbl">Imported</span><span class="val success">847 reservations</span></div>
+          <div class="field"><span class="lbl">Gross revenue</span><span class="val">$87,420</span></div>
+          <div class="field"><span class="lbl">Anomalies found</span><span class="val coral">3 flagged</span></div>
+        </div>
+        <span class="timing">5 min</span>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="how-step fade" style="transition-delay:0.12s">
+        <div class="how-step-num">03 · Forward receipts</div>
+        <h3>Email expenses to your inbox.</h3>
+        <p>Get a unique forwarding address. Forward any receipt — utility bills, repair invoices, IKEA orders. We OCR, categorize, and slot it into your P&amp;L. Or snap photos on mobile. Or type manually.</p>
+        <div class="how-mockup">
+          <div class="field"><span class="lbl">Your address</span><span class="val" style="font-size:10px">expenses-9k4@in.livaround.com</span></div>
+          <div class="field"><span class="lbl">Last receipt</span><span class="val">Goa Electricity · ₹4,820</span></div>
+          <div class="field"><span class="lbl">Auto-category</span><span class="val success">Utilities</span></div>
+        </div>
+        <span class="timing">Ongoing</span>
+      </div>
+    </div>
+
+    <p class="how-cta-chip fade" style="transition-delay:0.18s">
+      <strong>$10/property/mo</strong> · 90-day free trial · No card needed to start
+    </p>
+  </div>
+</section>
+
+<!-- ============ PERSONA ============ -->
+<section class="persona">
+  <div class="container">
+    <div class="persona-card fade">
+      <p class="persona-quote">
+        I own three properties in Goa, Dubai, and Phuket — each run by a different superhost.
+        Before LivAround, I'd spend half my Sunday reconciling payout statements with what my
+        hosts said. <em>Now I open one dashboard.</em> Same data, same numbers, same source of
+        truth — and when I needed liquidity for a fourth property, the platform underwrote
+        the loan against the same data it was already tracking.
+      </p>
+      <div class="persona-attrib">
+        <div class="persona-avatar">M</div>
+        <div class="persona-attrib-text">
+          <div class="name">A LivAround owner</div>
+          <div class="role">3 properties · 3 superhosts · 1 dashboard</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-band" id="cta">
+  <div class="container cta-inner">
+    <h2>Three properties.<br>Three superhosts. <span class="em-blue">One platform.</span></h2>
+    <p><strong>$10/property/month. 90 days free.</strong> Connect your first property in five minutes — bring in 12 months of Airbnb earnings on the way. No contract changes with your superhost. No host displacement.</p>
+    <div class="cta-actions">
+      <a href="https://livarounddashboard-production.up.railway.app/login" class="btn btn--primary">
+        Get owner access
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3.5 8h9m-3.5-3.5L12.5 8 9 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="/" class="btn btn--ghost">See the operations platform</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand-block">
+        <a href="/" class="nav-brand" style="color:white">
+          <span class="nav-logo"><svg viewBox="0 0 24 24" fill="none"><path d="M3 11L12 4L21 11V20H14V14H10V20H3V11Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          livaround
+          <span class="nav-vertical">For Owners</span>
+        </a>
+        <div class="footer-tagline">Own the asset. Now own the data.</div>
+        <p class="footer-desc">Part of LivAround Ltd. — operations, finance, and access for short-term rental investors.</p>
+      </div>
+      <div class="footer-col">
+        <h4>For owners</h4>
+        <a href="#problems">Why owners</a>
+        <a href="#loop-reveal">The compounding loop</a>
+        <a href="#toolkit">Owner toolkit</a>
+        <a href="#cta">Get access</a>
+      </div>
+      <div class="footer-col">
+        <h4>Sister verticals</h4>
+        <a href="/">LivAround Operations</a>
+        <a href="/finance">LivAround Finance</a>
+        <a href="/access">LivAround Access</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="/about.html">About</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="https://github.com/livaroundltd/livaroundsite">GitHub</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 LIVAROUND LTD · ENGLAND &amp; WALES · COMPANY 15610194
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Fade-in observer
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

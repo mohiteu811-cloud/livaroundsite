@@ -993,6 +993,240 @@
   .compare-table .row-highlight td { background: var(--brand-50); font-weight: 700; }
 
   /* ============================================================
+     For Owners — teaser
+     ============================================================ */
+  .owners-teaser {
+    border-top: 1px solid var(--slate-200);
+    background: linear-gradient(180deg, var(--paper) 0%, var(--sand) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .owners-teaser::before {
+    content: '';
+    position: absolute;
+    top: -40%; right: -10%;
+    width: 60%; height: 180%;
+    background: radial-gradient(circle, rgba(37,99,235,0.06), transparent 60%);
+    pointer-events: none;
+  }
+  .owners-teaser-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 80px;
+    align-items: center;
+    position: relative;
+  }
+  .owners-teaser-flow {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .otf-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border-radius: var(--r-pill);
+    background: var(--paper);
+    border: 1px solid var(--slate-200);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    transition: transform 180ms var(--ease), box-shadow 180ms var(--ease), border-color 180ms var(--ease);
+  }
+  .otf-pill:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+  .otf-pill--ops:hover     { border-color: var(--brand-500); }
+  .otf-pill--finance:hover { border-color: var(--sun-500); }
+  .otf-pill--access:hover  { border-color: var(--coral-500); }
+  .otf-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .otf-pill--ops     .otf-num { background: var(--brand-50); color: var(--brand-700); }
+  .otf-pill--finance .otf-num { background: var(--sun-100, #FFF3DC); color: var(--sun-700); }
+  .otf-pill--access  .otf-num { background: #FFEDE5; color: var(--coral-600); }
+  .otf-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--slate-500);
+    letter-spacing: 0.06em;
+  }
+  .otf-name { font-weight: 700; }
+  .otf-arrow {
+    width: 22px; height: 12px;
+    color: var(--slate-300);
+    flex-shrink: 0;
+  }
+
+  /* Mini second-loop orbit visual */
+  .owners-teaser-visual { display: flex; justify-content: center; align-items: center; }
+  .otv-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 460px;
+  }
+  .otv-stage::before {
+    content: '';
+    position: absolute;
+    inset: 4%;
+    border-radius: 50%;
+    border: 1.5px dashed var(--slate-200);
+    animation: otv-spin 140s linear infinite;
+    opacity: 0.6;
+  }
+  .otv-ring {
+    position: absolute;
+    inset: 8%;
+    border-radius: 50%;
+    border: 1.5px solid var(--brand-300, #88A8F8);
+    opacity: 0.4;
+  }
+  .otv-ring--outer {
+    inset: -2%;
+    border-color: var(--slate-200);
+    opacity: 0.5;
+  }
+  .otv-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 30%;
+    aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%);
+    background: var(--ink);
+    border-radius: 22px;
+    display: grid; place-items: center;
+    box-shadow: var(--shadow-lg);
+    overflow: visible;
+    z-index: 4;
+  }
+  .otv-center::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(69,116,240, 0.22);
+  }
+  .otv-center svg {
+    width: 38%; height: 38%;
+    z-index: 2;
+  }
+  .otv-center-label {
+    position: absolute;
+    bottom: -12px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--brand-600);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 5px 11px;
+    border-radius: var(--r-pill);
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.28);
+  }
+  .otv-pulse {
+    position: absolute;
+    inset: 8%;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: otv-spin 12s linear infinite;
+    z-index: 2;
+  }
+  .otv-dot {
+    position: absolute;
+    top: -8px; left: 50%;
+    transform: translateX(-50%);
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--brand-500, #4574F0);
+    box-shadow:
+      0 0 0 4px rgba(69,116,240, 0.20),
+      0 0 0 8px rgba(69,116,240, 0.08),
+      0 0 18px rgba(69,116,240, 0.7);
+    animation: otv-pulseColor 12s linear infinite;
+  }
+  @keyframes otv-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes otv-pulseColor {
+    0%,   25%  { background: #4574F0; box-shadow: 0 0 0 4px rgba(69,116,240,.20),  0 0 0 8px rgba(69,116,240,.08),  0 0 18px rgba(69,116,240,.7); }
+    33%,  58%  { background: #FFB547; box-shadow: 0 0 0 4px rgba(255,181,71,.20),  0 0 0 8px rgba(255,181,71,.08),  0 0 18px rgba(255,181,71,.7); }
+    66%,  92%  { background: #FF7A59; box-shadow: 0 0 0 4px rgba(255,122,89,.20),  0 0 0 8px rgba(255,122,89,.08),  0 0 18px rgba(255,122,89,.7); }
+    100%       { background: #4574F0; box-shadow: 0 0 0 4px rgba(69,116,240,.20),  0 0 0 8px rgba(69,116,240,.08),  0 0 18px rgba(69,116,240,.7); }
+  }
+  .otv-sat {
+    position: absolute;
+    width: 144px;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+  .otv-sat--ops      { top: 8%;   left: 50%; }
+  .otv-sat--finance  { top: 71%;  left: 86.4%; }
+  .otv-sat--access   { top: 71%;  left: 13.6%; }
+  .otv-sat-card {
+    background: var(--paper);
+    border: 1px solid var(--slate-200);
+    border-radius: 12px;
+    padding: 10px 12px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.4s var(--ease);
+  }
+  .otv-sat-role {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .otv-sat-role::before {
+    content: '';
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    margin-right: 5px;
+    vertical-align: middle;
+    opacity: 0.85;
+  }
+  .otv-sat--ops      .otv-sat-role { color: var(--brand-700); }
+  .otv-sat--finance  .otv-sat-role { color: var(--sun-700, #C97A12); }
+  .otv-sat--access   .otv-sat-role { color: var(--coral-600, #E15A3A); }
+  .otv-sat-name {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+  @keyframes otv-satGlow {
+    0%   { transform: scale(1); box-shadow: var(--shadow-sm), 0 0 0 0 var(--otv-glow, transparent); }
+    8%   { transform: scale(1.04); box-shadow: var(--shadow-sm), 0 0 0 6px var(--otv-glow, transparent); }
+    20%  { transform: scale(1.04); box-shadow: var(--shadow-sm), 0 0 0 5px var(--otv-glow, transparent); }
+    35%  { transform: scale(1); box-shadow: var(--shadow-sm), 0 0 0 0 transparent; }
+    100% { transform: scale(1); box-shadow: var(--shadow-sm), 0 0 0 0 transparent; }
+  }
+  .otv-sat--ops      .otv-sat-card { --otv-glow: rgba(69,116,240, 0.32); animation: otv-satGlow 12s var(--ease) infinite; animation-delay: 0s; }
+  .otv-sat--finance  .otv-sat-card { --otv-glow: rgba(255,181,71, 0.32); animation: otv-satGlow 12s var(--ease) infinite; animation-delay: 4s; }
+  .otv-sat--access   .otv-sat-card { --otv-glow: rgba(255,122,89, 0.32); animation: otv-satGlow 12s var(--ease) infinite; animation-delay: 8s; }
+
+  @media (max-width: 980px) {
+    .owners-teaser-grid { grid-template-columns: 1fr; gap: 50px; }
+    .owners-teaser-visual { order: 2; }
+    .otv-stage { max-width: 380px; margin: 0 auto; }
+  }
+  @media (max-width: 620px) {
+    .otv-sat { width: 110px; }
+    .otv-sat-name { font-size: 11px; }
+    .otv-sat-card { padding: 8px 10px; }
+    .owners-teaser-flow { gap: 6px; }
+    .otf-pill { padding: 6px 10px; font-size: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .otv-pulse, .otv-stage::before, .otv-sat-card { animation: none !important; }
+  }
+
+  /* ============================================================
      Pricing
      ============================================================ */
   .pricing-section { border-top: 1px solid var(--slate-200); background: var(--paper); }
@@ -1205,6 +1439,7 @@
     <div class="links">
       <span><a href="#loop">The loop</a></span>
       <span><a href="#features">Features</a></span>
+      <span><a href="/owners">For owners</a></span>
       <span><a href="#pricing">Pricing</a></span>
       <span><a href="#open-source">Open source</a></span>
       <span><a href="/about.html">About</a></span>
@@ -1789,6 +2024,104 @@
 </section>
 
 <!-- ============================================================
+     FOR OWNERS — teaser linking to /owners
+     ============================================================ -->
+<section id="for-owners" class="owners-teaser">
+  <div class="container section">
+    <div class="owners-teaser-grid">
+      <!-- Left: the pitch -->
+      <div class="owners-teaser-copy">
+        <div class="fade h-pre"><span class="eyebrow">▸ For owners</span></div>
+        <h2 class="h-section fade" style="transition-delay:0.08s; margin-top:14px">
+          Own the asset. <span style="color:var(--slate-500)">Now own the data.</span>
+        </h2>
+        <p class="lede fade" style="transition-delay:0.14s; margin-top:14px; max-width: 540px">
+          If superhosts run your properties, you've been flying half-blind. LivAround
+          gives owners a read-only operations layer across every host you work with —
+          and the same data that runs your portfolio also unlocks <strong>Finance</strong>
+          and <strong>Access</strong>. <em style="font-style: normal; color: var(--ink); font-weight: 600">One platform. Three verticals. Each one compounds.</em>
+        </p>
+        <div class="owners-teaser-flow fade" style="transition-delay:0.20s">
+          <div class="otf-pill otf-pill--ops">
+            <span class="otf-num">01</span>
+            <span class="otf-label">Run</span>
+            <span class="otf-name">Operations</span>
+          </div>
+          <svg class="otf-arrow" viewBox="0 0 24 12" aria-hidden="true">
+            <path d="M2 6h18m-3-3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+          <div class="otf-pill otf-pill--finance">
+            <span class="otf-num">02</span>
+            <span class="otf-label">Borrow</span>
+            <span class="otf-name">Finance</span>
+          </div>
+          <svg class="otf-arrow" viewBox="0 0 24 12" aria-hidden="true">
+            <path d="M2 6h18m-3-3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+          <div class="otf-pill otf-pill--access">
+            <span class="otf-num">03</span>
+            <span class="otf-label">Sell</span>
+            <span class="otf-name">Access</span>
+          </div>
+        </div>
+        <div class="fade" style="transition-delay:0.26s; margin-top: 30px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap">
+          <a href="/owners" class="btn btn--primary">
+            Read the full owner story
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3.5 8h9m-3.5-3.5L12.5 8 9 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--slate-500); display: flex; align-items: center; gap: 6px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--brand-500)"></span>
+            $10/property/mo · 90-day free trial
+          </span>
+        </div>
+      </div>
+
+      <!-- Right: mini second-loop orbit -->
+      <div class="owners-teaser-visual fade" style="transition-delay:0.10s" aria-label="Second loop diagram: Operations, Finance and Access satellites orbiting Your Asset">
+        <div class="otv-stage">
+          <div class="otv-ring"></div>
+          <div class="otv-ring otv-ring--outer"></div>
+
+          <!-- Center -->
+          <div class="otv-center">
+            <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <path d="M4 14L16 4L28 14V27H20V18H12V27H4V14Z" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="16" cy="22" r="1.5" fill="white"/>
+            </svg>
+            <span class="otv-center-label">Your Asset</span>
+          </div>
+
+          <!-- Pulse along ring -->
+          <div class="otv-pulse"><span class="otv-dot"></span></div>
+
+          <!-- Three vertical satellites -->
+          <div class="otv-sat otv-sat--ops">
+            <div class="otv-sat-card">
+              <span class="otv-sat-role">Operations</span>
+              <span class="otv-sat-name">Run the asset</span>
+            </div>
+          </div>
+          <div class="otv-sat otv-sat--finance">
+            <div class="otv-sat-card">
+              <span class="otv-sat-role">Finance</span>
+              <span class="otv-sat-name">Borrow against yield</span>
+            </div>
+          </div>
+          <div class="otv-sat otv-sat--access">
+            <div class="otv-sat-card">
+              <span class="otv-sat-role">Access</span>
+              <span class="otv-sat-name">Sell fractions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
      PRICING
      ============================================================ -->
 <section id="pricing" class="pricing-section">
@@ -1936,6 +2269,7 @@ $ docker compose up -d
           <span class="col-title">Sister verticals</span>
           <a href="/finance">LivAround Finance</a>
           <a href="/access">LivAround Access</a>
+          <a href="/owners">For owners</a>
           <a href="/time-compliance.html">TIME compliance</a>
         </div>
         <div class="col">
